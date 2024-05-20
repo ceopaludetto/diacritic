@@ -1,4 +1,4 @@
-export type diacriticGenerationOptions = {
+export type DiacriticGenerationOptions = {
 	/**
 	 * Additional lines on top of the file. Usually, you want to add lint disable comments
 	 */
@@ -13,7 +13,7 @@ export type diacriticGenerationOptions = {
 
 };
 
-export type diacriticOptions = {
+export type DiacriticOptions = {
 	/**
 	 * Which of the supported languages will be the default language (fallback)
 	 *
@@ -24,7 +24,7 @@ export type diacriticOptions = {
 	/**
 	 * Generation specific options
 	 */
-	generation: diacriticGenerationOptions;
+	generation: DiacriticGenerationOptions;
 
 	/**
 	 * Which languages your application will support

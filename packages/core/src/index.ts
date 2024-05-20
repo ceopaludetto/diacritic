@@ -1,4 +1,4 @@
-import type { diacriticOptions } from "./utilities/types";
+import type { DiacriticOptions } from "./utilities/types";
 
 import { existsSync, readFileSync } from "node:fs";
 import { EOL } from "node:os";
@@ -16,7 +16,7 @@ import {
 } from "./utilities/loader";
 import { ResourceGraph } from "./utilities/resource";
 
-export const diacritic = createUnplugin<diacriticOptions>(({
+export const diacritic = createUnplugin<DiacriticOptions>(({
 	defaultLanguage,
 	generation,
 	languages,

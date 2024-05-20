@@ -17,17 +17,21 @@
 	},
 	"scripts": {
 		"build": "turbo build --cache-dir=.turbo",
-		"lint": "turbo lint --cache-dir=.turbo && manypkg check",
-		"lint:fix": "turbo lint --cache-dir=.turbo -- --fix && manypkg fix",
-		"test": "turbo test --cache-dir=.turbo",
-		"test:update": "turbo test --cache-dir=.turbo -- --update-snapshots",
-		"docs:dev": "vitepress dev documentation",
 		"docs:build": "vitepress build documentation",
-		"docs:preview": "vitepress preview documentation"
+		"docs:dev": "vitepress dev documentation",
+		"docs:preview": "vitepress preview documentation",
+		"lint:fix": "turbo lint --cache-dir=.turbo -- --fix && manypkg fix",
+		"lint": "turbo lint --cache-dir=.turbo && manypkg check",
+		"release": "bun run build && bun changesets publish",
+		"test:update": "turbo test --cache-dir=.turbo -- --update-snapshots",
+		"test": "turbo test --cache-dir=.turbo"
 	},
 	"dependencies": {
 		"@antfu/eslint-config": "^2.18.1",
+		"@changesets/changelog-github": "^0.5.0",
+		"@changesets/cli": "^2.27.3",
 		"@manypkg/cli": "^0.21.4",
+		"@shikijs/vitepress-twoslash": "^1.6.0",
 		"@total-typescript/tsconfig": "^1.0.4",
 		"@types/bun": "^1.1.2",
 		"eslint": "^9.3.0",

@@ -1,5 +1,5 @@
 import type { ResourceGraph } from "./resource";
-import type { diacriticGenerationOptions, Entry, Parser } from "./types";
+import type { DiacriticGenerationOptions, Entry, Parser } from "./types";
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { EOL } from "node:os";
@@ -66,7 +66,7 @@ export function createRegistry(defaultLanguage: string, languages: string[]) {
 /// keep-sorted
 type GenerateTypesOptions = {
 	defaultLanguage: string;
-	generation: diacriticGenerationOptions;
+	generation: DiacriticGenerationOptions;
 	parser: Parser;
 	resourceGraph: ResourceGraph;
 };
@@ -102,7 +102,9 @@ export function generateTypes({ defaultLanguage, generation, parser, resourceGra
 			}
 		}
 
-		const exports = Object.keys(namespaces).map(namespace => `\texport * as ${namespace} from "${prefixes[1]}${language}/${namespace}";`);
+		const exports = Object.keys(namespaces)
+			.map(namespace => `\texport * as ${namespace} from "${prefixes[1]}${language}/${namespace}";`);
+
 		declarations.push(
 			`declare module "${prefixes[1]}${language}" {`,
 			`${exports.join(EOL)}`,

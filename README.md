@@ -1,3 +1,3 @@
-# diacritic
+# Diacritic
 
 Closing the gap in i18n solutions

@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: "Diacritic"
-  text: "New approach to i18n"
-  tagline: My great project tagline
+  text: "Stupid Simple i18n Solution"
+  tagline: "A simple, type-safe, and modern solution to internacionalization (i18n)."
   actions:
     - theme: brand
       text: Get Started
