@@ -1,6 +1,6 @@
 import { defaultLanguage, languages } from "~translations/registry";
 
-class diacritic {
+class Diacritic {
 	public readonly languages: string[] = languages;
 
 	private current: string = defaultLanguage;
@@ -21,4 +21,4 @@ class diacritic {
 	};
 }
 
-export default new diacritic();
+export default new Diacritic();

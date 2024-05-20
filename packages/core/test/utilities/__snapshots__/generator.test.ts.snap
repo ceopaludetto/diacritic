@@ -2,7 +2,7 @@
 
 exports[`createFunctionFromEntry should create a function from an entry correctly 1`] = `
 "export function hello(name: string) {
-	return \`Hello, ${name}!\`
+	return \`Hello, ${name}!\`;
 }"
 `;
 
@@ -12,11 +12,11 @@ exports[`createImportFromLanguageAndNamespace should create a import from langua
 
 exports[`createConditionalFunctionFromEntry should create a conditional function from an entry correctly 1`] = `
 "export function hello(name: string) {
-	switch (language()) {
+	switch (r.language()) {
 		case "en":
-			return en.hello(name)
+			return en?.hello?.(name)
 		case "pt":
-			return pt.hello(name)
+			return pt?.hello?.(name)?? en?.hello?.(name)
 	}
 }"
 `;

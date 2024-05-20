@@ -1,24 +1,37 @@
+import { transformerTwoslash } from "@shikijs/vitepress-twoslash";
 import { defineConfig } from "vitepress";
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
 	title: "Diacritic",
-	description: "New approach to i18n",
+	description: "Stupid Simple i18n Solution",
+	markdown: {
+		codeTransformers: [transformerTwoslash()],
+	},
+	srcDir: "src",
+	/// keep-sorted
 	themeConfig: {
-		// https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "Guides", link: "/guides", activeMatch: "/guides/" },
+			{ text: "Integrations", link: "/integrations", activeMatch: "/integrations/" },
 		],
-
+		search: {
+			provider: "local",
+		},
 		sidebar: [
 			{
 				text: "Guides",
 				items: [
 					{ text: "Getting started", link: "/guides/" },
+					{ text: "Why Diacritic?", link: "/guides/why" },
+				],
+			},
+			{
+				text: "Integrations",
+				items: [
+					{ text: "React", link: "/integrations/react" },
 				],
 			},
 		],
-
 		socialLinks: [
 			{ icon: "github", link: "https://github.com/ceopaludetto/diacritic" },
 		],

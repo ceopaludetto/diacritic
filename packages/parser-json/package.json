@@ -3,6 +3,7 @@
 	"type": "module",
 	"version": "0.0.1",
 	"packageManager": "bun@1.1.8",
+	"sideEffects": true,
 	"exports": {
 		"import": {
 			"types": "./dist/index.d.ts",

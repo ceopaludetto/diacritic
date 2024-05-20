@@ -36,7 +36,7 @@ describe("createConditionalFunctionFromEntry", () => {
 			return: "Hello, {{ name | string }}!",
 		};
 
-		expect(createConditionalFunctionFromEntry(["en", "pt"], entry)).toMatchSnapshot();
+		expect(createConditionalFunctionFromEntry("en", ["en", "pt"], entry)).toMatchSnapshot();
 	});
 });
 
