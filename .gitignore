@@ -1,0 +1,12 @@
+# Modules
+node_modules
+
+# Build artifacts
+.turbo/
+dist/
+
+# Vitepress
+documentation/.vitepress/cache
+
+# macOS
+.DS_Store
