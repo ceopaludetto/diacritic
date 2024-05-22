@@ -33,5 +33,16 @@ describe("resourceGraph", () => {
 		expect(resourceGraph.allEntriesForLanguageAndNamespace("en", "common")).toStrictEqual([
 			"/src/locales/en/common.json",
 		]);
+
+		expect(resourceGraph.allNamespaces()).toStrictEqual(["common", "other"]);
+		expect(resourceGraph.hasFile("/src/locales/en/common.json")).toBe(true);
+
+		resourceGraph.addFile("/src/locales/en/another.json", resources);
+		expect(resourceGraph.allEntriesForLanguageAndNamespace("en", "another")).toStrictEqual([
+			"/src/locales/en/another.json",
+		]);
+
+		resourceGraph.removeFile("/src/locales/en/another.json", resources);
+		expect(resourceGraph.allEntriesForLanguageAndNamespace("en", "another")).toStrictEqual([]);
 	});
 });

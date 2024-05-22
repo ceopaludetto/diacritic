@@ -50,6 +50,7 @@ export type DiacriticOptions = {
 export type Entry = {
 	/**
 	 * The function name
+	 * @example "screenMetaTitle"
 	 */
 	name: string;
 
@@ -59,7 +60,14 @@ export type Entry = {
 	args: { name: string; type: string }[];
 
 	/**
+	 * The function path
+	 * @example "screen.meta.title"
+	 */
+	path: string;
+
+	/**
 	 * The function return
+	 * @example "Title"
 	 */
 	return: string;
 };
