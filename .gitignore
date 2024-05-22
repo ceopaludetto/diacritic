@@ -5,8 +5,5 @@ node_modules
 .turbo/
 dist/
 
-# Vitepress
-documentation/.vitepress/cache
-
 # macOS
 .DS_Store

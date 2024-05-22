@@ -53,7 +53,7 @@ describe("extractLanguageAndNamespace", () => {
 		expect(extractLanguageAndNamespace(languages, "/~translations/en/common"))
 			.toStrictEqual({ language: "en", namespace: "common", mode: "languageAndNamespace" });
 
-		expect(extractLanguageAndNamespace(languages, "/~translations/common"))
-			.toStrictEqual({ namespace: "common", mode: "namespaceOnly" });
+		expect(extractLanguageAndNamespace(languages, "/~translations/registry"))
+			.toStrictEqual({ mode: "registry" });
 	});
 });

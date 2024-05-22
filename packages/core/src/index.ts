@@ -6,7 +6,7 @@ import { EOL } from "node:os";
 import invariant from "tiny-invariant";
 import { createUnplugin } from "unplugin";
 
-import { createConditionalFunctionFromEntry, createExportFromLanguageAndNamespace, createFunctionFromEntry, createImportExport, createImportFromLanguageAndNamespace, createRegistry, generateTypes } from "./utilities/generator";
+import { createExportFromLanguageAndNamespace, createFunctionFromEntry, createRegistry, generateTypes } from "./utilities/generator";
 import {
 	extractLanguageAndNamespace,
 	isResource,
@@ -31,11 +31,18 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 		enforce: "pre",
 		buildStart() {
 			for (const file of resourceGraph.allFiles()) this.addWatchFile(file);
-			generateTypes({ defaultLanguage, generation, parser, resourceGraph });
+
+			const namespaces = resourceGraph.allNamespaces();
+			generateTypes({ defaultLanguage, generation, languages, namespaces, parser, resourceGraph });
 		},
-		watchChange: (id) => {
+		watchChange: (id, change) => {
 			if (!isResource(id, resources)) return;
-			generateTypes({ defaultLanguage, generation, parser, resourceGraph });
+
+			if (change.event === "create") resourceGraph.addFile(id, resources);
+			if (change.event === "delete") resourceGraph.removeFile(id, resources);
+
+			const namespaces = resourceGraph.allNamespaces();
+			generateTypes({ defaultLanguage, generation, languages, namespaces, parser, resourceGraph });
 		},
 		resolveId: (id) => {
 			if (isTranslationPath(id)) return normalizeTranslationPath(id) + ".ts";
@@ -54,30 +61,8 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			// ```ts
 			// import { defaultLanguage, languages } from "virtual:translations/registry";
 			// ```
-			if (extract.mode === "registry") return { code: createRegistry(defaultLanguage, languages) };
-
-			// In the namespace only mode, we want to export a single namespace from all languages.
-			// Example:
-			// ```ts
-			// import * as m from "virtual:translations/common";
-			// ```
-			if (extract.mode === "namespaceOnly") {
-				const { namespace } = extract;
-
-				const files = resourceGraph.allEntriesForLanguageAndNamespace(defaultLanguage, namespace)
-					.filter(file => existsSync(file))
-					.map(file => readFileSync(file, "utf-8"));
-
-				invariant(files.length > 0, `There's no language resource available [${resource}]`);
-
-				const imports = languages.map(language => createImportFromLanguageAndNamespace(language, namespace));
-				imports.push(`import r from "@diacritic/runtime"`);
-
-				const entries = files.flatMap(item => parser.convertFile(item));
-				const functions = entries.map(item => createConditionalFunctionFromEntry(defaultLanguage, languages, item));
-
-				return { code: createImportExport(imports, functions) };
-			}
+			if (extract.mode === "registry")
+				return { code: createRegistry(defaultLanguage, languages, resourceGraph.allNamespaces()) };
 
 			// In the language only mode, we want to export all namespaces from that language.
 			// Example:
@@ -95,7 +80,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			// In the language and namespace mode, we want to export a single namespace from a language.
 			// Example:
 			// ```ts
-			// import * as m from "virtual:translations/en/common";
+			// import * as t from "virtual:translations/en/common";
 			// ```
 			if (extract.mode === "languageAndNamespace") {
 				const { language, namespace } = extract;

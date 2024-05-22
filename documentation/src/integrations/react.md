@@ -28,58 +28,47 @@ $ bun add @diacritic/react
 
 ## Usage
 
-To use the Diacritic React integration, you will need to import the `useTranslation` and `useTranslationContext` hooks:
-
-```ts twoslash
-import { useTranslation, useTranslationContext } from "@diacritic/react";
-```
-
-### `useTranslation`
-
-In order to make the language change be reactive, you will need to wrap the imported translation into the `useTranslation` hook:
+To use the Diacritic React integration, you will need to import the `DiacriticProvider` component and the `useTranslation` hook:
 
 ```tsx twoslash
 // @jsx: react-jsx
-import { useTranslation } from "@diacritic/react";
-import * as common from "virtual:translations/common";
+// @module: preserve
+// @filename: index.tsx
+// ---cut-before---
+import { detect } from "@diacritic/detector";
+import { htmlLangAttributeDetector } from "@diacritic/detector/client";
+import { DiacriticProvider, createDiacritic, useTranslation } from "@diacritic/react";
+import { createRoot } from "react-dom/client";
 
-export function Component() {
-	const t = useTranslation(common);
+function Component() {
+	const { t } = useTranslation(["common"]);
 
-	return <p>{t.hello()}</p>;
+	return <p>{t.common.hello()}</p>;
+}
+
+async function main() {
+	const language = detect(htmlLangAttributeDetector);
+	const diacritic = await createDiacritic(language, ["common"]);
+
+	createRoot(document.getElementById("root")!).render(
+		<DiacriticProvider diacritic={diacritic}>
+			<Component />
+		</DiacriticProvider>
+	);
 }
 // ---cut-after---
 // @filename: translations.d.ts
-declare module "virtual:translations/common" {
-	export function hello(): string;
+declare module "~translations/registry" {
+	export const defaultLanguage: "en";
+	export const languages: ("en" | "pt")[];
+	export const namespaces: ("common")[];
+
+	export type SupportedLanguages = typeof languages;
+	export type SupportedNamespaces = typeof namespaces;
 }
-```
-
-This guarantees that the component will re-render when the language changes.
-
-### `useTranslationContext`
-
-You can also use the `useTranslationContext` hook to access the current language and change it:
-
-```tsx twoslash
-// @jsx: react-jsx
-import { useTranslationContext } from "@diacritic/react";
-
-function Component() {
-	const { languages, language, setLanguage } = useTranslationContext();
-
-	return (
-		<div>
-			<p>
-				All available languages:
-				{languages.join(", ")}
-			</p>
-			<p>
-				Your current language is
-				{language}
-			</p>
-			<button onClick={() => setLanguage("pt")}>Change to PT</button>
-		</div>
-	);
+declare module "~translations/proxy" {
+	type Proxy = {
+		common: { hello: () => string };
+	};
 }
 ```

@@ -1,0 +1,39 @@
+{
+	"name": "@diacritic/parser",
+	"type": "module",
+	"version": "0.0.1",
+	"packageManager": "bun@1.1.8",
+	"sideEffects": true,
+	"exports": {
+		"./json": {
+			"import": {
+				"types": "./dist/json.d.ts",
+				"default": "./dist/json.js"
+			},
+			"require": {
+				"types": "./dist/json.d.cts",
+				"default": "./dist/json.cjs"
+			}
+		}
+	},
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"engines": {
+		"bun": ">=1.0.0"
+	},
+	"scripts": {
+		"build": "tsup --silent",
+		"lint": "eslint src",
+		"test": "bun test"
+	},
+	"dependencies": {
+		"tiny-invariant": "^1.3.3"
+	},
+	"devDependencies": {
+		"@diacritic/utilities": "workspace:"
+	}
+}

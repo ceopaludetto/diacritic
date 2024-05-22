@@ -1,0 +1,7 @@
+{
+	"actions": {
+		"switch": "Change language"
+	},
+	"hello": "Hello World!",
+	"interpolation": "Value {value:number}"
+}

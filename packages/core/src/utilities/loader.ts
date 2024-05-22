@@ -27,7 +27,7 @@ export function extractLanguageAndNamespace(languages: string[], path: string) {
 		return { language: first, mode: "languageOnly" } as const;
 	}
 
-	return { namespace: first, mode: "namespaceOnly" } as const;
+	throw new Error(`Language ${first} is not supported`);
 }
 
 export function resourceWithoutPrefix(path: string) {

@@ -31,11 +31,17 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
+      - name: Run Lint
+        run: bun run lint
+
+      - name: Run Docs Lint
+        run: bun run docs:lint
+
       - name: Run Build
         run: bun run build
 
-      - name: Run Lint
-        run: bun run lint
+      - name: Run Docs Build
+        run: bun run docs:build
 
       - name: Run Tests
         run: bun run test

@@ -1,0 +1,30 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createFunctionFromEntry should create a function from an entry correctly 1`] = `
+"export function hello(name: string) {
+	return \`Hello, { name : string }!\`;
+}"
+`;
+
+exports[`createExportFromLanguageAndNamespace should create a export from language and namespace correctly 1`] = `"export * as common from "/~translations/en/common";"`;
+
+exports[`createRegistry should create a registry correctly 1`] = `
+"export const defaultLanguage = "en" as const;
+export const languages = ["en","pt"] as const;
+export const namespaces = ["common","zod"] as const;
+
+const modules = {
+	en: {
+			common: async () => import("~translations/en/common"),
+			zod: async () => import("~translations/en/zod"),
+	},
+	pt: {
+			common: async () => import("~translations/pt/common"),
+			zod: async () => import("~translations/pt/zod"),
+	},
+}
+
+export async function importTranslationModule(language: string, namespace: string) {
+	return modules[language][namespace]();
+}"
+`;

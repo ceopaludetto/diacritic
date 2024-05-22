@@ -7,6 +7,7 @@ export default eslint(
 			quotes: "double",
 			semi: true,
 			overrides: {
+				"style/brace-style": ["error", "1tbs"],
 				"style/max-len": ["error", { code: 120, tabWidth: 2, ignoreStrings: true }],
 				"style/jsx-sort-props": [
 					"warn",
@@ -31,6 +32,10 @@ export default eslint(
 				"ts/no-misused-promises": "off",
 				"ts/no-use-before-define": "off",
 			},
+		},
+		formatters: {
+			css: true,
+			markdown: "prettier",
 		},
 		vue: false,
 	},
@@ -80,5 +85,11 @@ export default eslint(
 			// Modules
 			"**/node_modules/**/*",
 		],
+	},
+	{
+		files: ["documentation/**/*.md"],
+		rules: {
+			"style/max-len": "off",
+		},
 	},
 );

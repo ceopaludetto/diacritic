@@ -29,11 +29,10 @@
 		"test": "bun test"
 	},
 	"dependencies": {
+		"proxy-deep": "^4.0.1",
 		"tiny-invariant": "^1.3.3"
 	},
 	"devDependencies": {
-		"@diacritic/utilities": "workspace:",
-		"@types/react": "^18.3.2",
-		"react": "^18.3.1"
+		"@diacritic/utilities": "workspace:"
 	}
 }
