@@ -92,7 +92,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 				invariant(files.length > 0, `There's no language resource available [${resource}]`);
 
 				const entries = files.flatMap(item => parser.convertFile(item));
-				const functions = entries.map(item => createFunctionFromEntry(parser.interpolation, item));
+				const functions = entries.map(item => createFunctionFromEntry(item));
 
 				return { code: functions.join(EOL) };
 			}

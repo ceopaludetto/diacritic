@@ -1,19 +1,27 @@
 import type { Entry, Parser } from "@diacritic/core";
 
+import { toCamelCase } from "@diacritic/utilities";
+
 import { extractArgumentsFromString, functionName } from "./utilities/parser";
 
 function parseContent(content: Record<string, any>, parent: string[] = []): Entry[] {
 	return Object.entries(content)
 		.reduce<Entry[]>((acc, [key, value]) => {
-			if (typeof value !== "string" && (typeof value !== "object" || Array.isArray(value))) return acc;
-			if (typeof value === "object") return [...acc, ...parseContent(value, [...parent, key])];
+			if (typeof value === "object" && !Array.isArray(value))
+				return [...acc, ...parseContent(value, [...parent, toCamelCase(key)])];
 
-			const name = functionName(parent, key);
-			const args = extractArgumentsFromString(value);
+			if (typeof value === "string") {
+				const name = functionName(parent, key);
+				const args = extractArgumentsFromString(value);
 
-			const fn = { name, path: [...parent, key].join("."), args, return: value };
+				const str = value.replace(/\{\s*(\w+)\s*:\s*(\w+)\s*\}/g, (_, name) => `\${${name}}`);
 
-			return [...acc, fn];
+				const fn = { name, path: [...parent, toCamelCase(key)].join("."), args, return: str };
+
+				return [...acc, fn];
+			}
+
+			return acc;
 		}, []);
 }
 

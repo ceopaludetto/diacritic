@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import type { Entry } from "~/utilities/types";
 
 import { describe, expect, it } from "bun:test";
@@ -10,10 +11,10 @@ describe("createFunctionFromEntry", () => {
 			name: "hello",
 			path: "hello",
 			args: [{ name: "name", type: "string" }],
-			return: "Hello, { name : string }!",
+			return: "Hello, ${name}!",
 		};
 
-		expect(createFunctionFromEntry(["{", "}"], entry)).toMatchSnapshot();
+		expect(createFunctionFromEntry(entry)).toMatchSnapshot();
 	});
 });
 

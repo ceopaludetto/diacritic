@@ -42,7 +42,6 @@
 		"tiny-invariant": "^1.3.3"
 	},
 	"devDependencies": {
-		"@diacritic/utilities": "workspace:",
 		"@types/react": "^18.3.2",
 		"react": "^18.3.1"
 	}

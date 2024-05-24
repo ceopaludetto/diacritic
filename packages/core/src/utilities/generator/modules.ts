@@ -1,16 +1,13 @@
-import type { Entry, Parser } from "../types";
+import type { Entry } from "../types";
 
 import { EOL } from "node:os";
 
 import { prefixes } from "../loader";
 
-export function createFunctionFromEntry(interpolation: Parser["interpolation"], entry: Entry) {
-	const interpolators = interpolation.map(side => side.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-	const regex = new RegExp(`${interpolators[0]}\\s*(\\w+)\\s*\\|\\s*[\\w\\s]*\\s*${interpolators[1]}`, "g");
-
+export function createFunctionFromEntry(entry: Entry) {
 	return [
 		`export function ${entry.name}(${entry.args.map(item => item.name + ": " + item.type)}) {`,
-		`\treturn \`${entry.return.replace(regex, (_, content) => `\${${content}}`)}\`;`,
+		`\treturn \`${entry.return}\`;`,
 		`}`,
 	].join(EOL);
 }

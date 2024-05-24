@@ -1,12 +1,12 @@
 import type { Entry } from "@diacritic/core";
 
-import { capitalizeFirst } from "@diacritic/utilities";
+import { capitalizeFirst, toCamelCase } from "@diacritic/utilities";
 import invariant from "tiny-invariant";
 
 export function functionName(parent: string[], key: string) {
 	return [...parent, key].reduce((acc, item, index) => {
-		if (index === 0) return acc + item;
-		return acc + capitalizeFirst(item);
+		if (index === 0) return acc + toCamelCase(item);
+		return acc + capitalizeFirst(toCamelCase(item));
 	}, "");
 }
 

@@ -28,18 +28,7 @@
 		"lint": "eslint src",
 		"test": "bun test"
 	},
-	"peerDependencies": {
-		"@diacritic/core": "workspace:"
-	},
-	"peerDependenciesMeta": {
-		"@diacritic/core": {
-			"optional": false
-		}
-	},
 	"dependencies": {
 		"tiny-invariant": "^1.3.3"
-	},
-	"devDependencies": {
-		"@diacritic/core": "workspace:"
 	}
 }
