@@ -1,9 +1,10 @@
 ---
-"@diacritic/parser-json": patch
-"@diacritic/core": patch
-"@diacritic/react": patch
-"@diacritic/runtime": patch
 "@diacritic/utilities": patch
+"@diacritic/detector": patch
+"@diacritic/runtime": patch
+"@diacritic/parser": patch
+"@diacritic/react": patch
+"@diacritic/core": patch
 ---
 
 Adding changeset
