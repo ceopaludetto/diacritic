@@ -18,6 +18,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.5
+          run_install: false
+
+      - name: Get PNPM store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache PNPM
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Cache Turbo
         uses: actions/cache@v4
         with:
@@ -26,23 +45,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-
       - name: Install Dependencies
-        run: bun install
+        run: pnpm install
 
       - name: Run Lint
-        run: bun run lint
-
-      - name: Run Docs Lint
-        run: bun run docs:lint
+        run: pnpm run lint
 
       - name: Run Build
-        run: bun run build
-
-      - name: Run Docs Build
-        run: bun run docs:build
+        run: pnpm run build
 
       - name: Run Tests
-        run: bun run test
+        run: pnpm run test

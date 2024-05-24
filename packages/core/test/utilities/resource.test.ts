@@ -1,15 +1,16 @@
-import { describe, expect, it, mock } from "bun:test";
+import { describe, expect, it, vi } from "vitest";
 
 import { ResourceGraph } from "~/utilities/resource";
 
+vi.mock("glob", () => ({
+	globSync: vi.fn()
+		.mockReturnValueOnce(["/src/locales/en/common.json", "/src/locales/en/other.json"])
+		.mockReturnValueOnce(["/src/locales/pt/common.json", "/src/locales/pt/other.json"]),
+}));
+
 describe("resourceGraph", () => {
-	it("should correctly create a resource graph instance", () => {
-		const globSync = mock();
-		mock.module("glob", () => ({
-			globSync: globSync
-				.mockReturnValueOnce(["/src/locales/en/common.json", "/src/locales/en/other.json"])
-				.mockReturnValueOnce(["/src/locales/pt/common.json", "/src/locales/pt/other.json"]),
-		}));
+	it("should correctly create a resource graph instance", async () => {
+		const { globSync } = await import("glob");
 
 		const languages = ["en", "pt"];
 		const resources = ["/src/locales/{{language}}/*.json"];

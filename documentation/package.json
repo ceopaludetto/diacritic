@@ -1,0 +1,24 @@
+{
+	"name": "@diacritic/documentation",
+	"type": "module",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "vitepress dev .",
+		"build": "vitepress build .",
+		"lint": "eslint .",
+		"preview": "vitepress preview ."
+	},
+	"dependencies": {
+		"@diacritic/core": "workspace:",
+		"@diacritic/detector": "workspace:",
+		"@diacritic/parser": "workspace:",
+		"@diacritic/react": "workspace:",
+		"@diacritic/runtime": "workspace:",
+		"vitepress": "^1.2.2"
+	},
+	"devDependencies": {
+		"@types/react": "^18.3.2",
+		"@types/react-dom": "^18.2.22"
+	}
+}

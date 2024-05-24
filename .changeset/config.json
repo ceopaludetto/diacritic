@@ -1,9 +1,9 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
-	"bumpVersionsWithWorkspaceProtocolOnly": true,
-	"changelog": ["@changesets/changelog-github", { "repo": "ceopaludetto/diacritic" }],
   "access": "public",
   "baseBranch": "main",
+	"bumpVersionsWithWorkspaceProtocolOnly": true,
+	"changelog": ["@changesets/changelog-github", { "repo": "ceopaludetto/diacritic" }],
   "commit": false,
   "updateInternalDependencies": "patch"
 }

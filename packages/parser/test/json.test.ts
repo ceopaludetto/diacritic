@@ -1,5 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it } from "vitest";
 
 import parserJson from "~/json";
 
