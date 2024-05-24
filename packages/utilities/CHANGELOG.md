@@ -1,5 +1,11 @@
 # @diacritic/utilities
 
+## 0.0.3
+
+### Patch Changes
+
+- [#8](https://github.com/ceopaludetto/diacritic/pull/8) [`abcdd52`](https://github.com/ceopaludetto/diacritic/commit/abcdd5227aaeaa9dddf696019f4aaa772ec01c70) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Move to PNPM instead of Bun
+
 ## 0.0.2
 
 ### Patch Changes
