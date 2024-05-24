@@ -1,6 +1,6 @@
-import { mock } from "bun:test";
+import { vi } from "vitest";
 
-mock.module("@diacritic/runtime", () => ({
+vi.mock("@diacritic/runtime", () => ({
 	defaultLanguage: "en-US",
 	languages: ["en-US", "pt-BR"],
 }));

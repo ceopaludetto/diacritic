@@ -1,7 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 import type { Entry } from "~/utilities/types";
 
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it } from "vitest";
 
 import { createExportFromLanguageAndNamespace, createFunctionFromEntry, createRegistry } from "~/utilities/generator/modules";
 

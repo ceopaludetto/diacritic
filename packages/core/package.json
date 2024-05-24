@@ -2,7 +2,6 @@
 	"name": "@diacritic/core",
 	"type": "module",
 	"version": "0.0.2",
-	"packageManager": "bun@1.1.8",
 	"sideEffects": true,
 	"exports": {
 		".": {
@@ -72,13 +71,9 @@
 	"files": [
 		"dist"
 	],
-	"engines": {
-		"bun": ">=1.0.0"
-	},
 	"scripts": {
 		"build": "tsup --silent",
-		"lint": "eslint src",
-		"test": "bun test"
+		"lint": "eslint src"
 	},
 	"dependencies": {
 		"@diacritic/utilities": "workspace:",

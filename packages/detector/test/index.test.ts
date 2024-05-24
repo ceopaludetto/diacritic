@@ -1,16 +1,7 @@
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-import { afterAll, beforeAll, expect, it } from "bun:test";
+import { expect, it } from "vitest";
 
 import { localStorageDetector, sessionStorageDetector } from "~/client";
 import { detect } from "~/index";
-
-beforeAll(() => {
-	GlobalRegistrator.register();
-});
-
-afterAll(() => {
-	GlobalRegistrator.unregister();
-});
 
 it("should combine detectors and return the first supported locale", () => {
 	window.localStorage.setItem("locale", "en-us");

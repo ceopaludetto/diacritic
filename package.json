@@ -2,46 +2,36 @@
 	"name": "diacritic",
 	"type": "module",
 	"private": true,
-	"workspaces": [
-		"./examples/*",
-		"./packages/*"
-	],
-	"packageManager": "bun@1.1.8",
+	"packageManager": "pnpm@9.0.5",
 	"author": {
 		"name": "Carlos Eduardo de Oliveira Paludetto",
 		"email": "ceo.paludetto@gmail.com",
 		"url": "https://www.github.com/ceopaludetto"
 	},
 	"license": "MIT",
-	"engines": {
-		"bun": ">=1.0.0"
-	},
 	"scripts": {
 		"build": "turbo build --cache-dir=.turbo",
-		"docs:dev": "vitepress dev documentation",
-		"docs:build": "vitepress build documentation",
-		"docs:lint": "eslint documentation",
-		"docs:preview": "vitepress preview documentation",
 		"lint:fix": "turbo lint --cache-dir=.turbo -- --fix && manypkg fix",
 		"lint": "turbo lint --cache-dir=.turbo && manypkg check",
-		"release": "bun run build && bun run docs:build && bun changeset publish",
-		"test:update": "turbo test --cache-dir=.turbo -- --update-snapshots",
-		"test": "turbo test --cache-dir=.turbo"
+		"release": "pnpm run build && pnpm changeset publish",
+		"test:update": "vitest run --update",
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"@antfu/eslint-config": "^2.18.1",
 		"@changesets/changelog-github": "^0.5.0",
 		"@changesets/cli": "^2.27.3",
-		"@happy-dom/global-registrator": "^14.11.0",
 		"@manypkg/cli": "^0.21.4",
 		"@shikijs/vitepress-twoslash": "^1.6.0",
 		"@total-typescript/tsconfig": "^1.0.4",
-		"@types/bun": "^1.1.2",
+		"@types/node": "^20.12.12",
 		"eslint": "^9.3.0",
 		"eslint-plugin-format": "^0.1.1",
+		"happy-dom": "^14.11.0",
 		"tsup": "^8.0.2",
 		"turbo": "^1.13.3",
 		"typescript": "^5.4.5",
-		"vitepress": "^1.2.2"
+		"vite-tsconfig-paths": "^4.3.2",
+		"vitest": "^1.6.0"
 	}
 }

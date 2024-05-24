@@ -1,15 +1,6 @@
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-import { afterAll, beforeAll, describe, expect, it } from "bun:test";
+import { describe, expect, it } from "vitest";
 
 import { cookieDetector, htmlLangAttributeDetector, localStorageDetector, navigatorDetector, sessionStorageDetector } from "~/client";
-
-beforeAll(() => {
-	GlobalRegistrator.register();
-});
-
-afterAll(() => {
-	GlobalRegistrator.unregister();
-});
 
 const supported = ["en-US", "pt-BR"];
 
