@@ -4,6 +4,7 @@ run-name: CI (${{ github.event.pull_request.title }})
 on:
   pull_request:
     branches: [main]
+    types: [opened, synchronize]
 
 env:
   CI: true
