@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import { describe, expect, it } from "bun:test";
 
 import parserJson from "~/json";
@@ -26,8 +27,8 @@ describe("parseJson", () => {
 		expect(parser.convertFile(json)).toStrictEqual([
 			{ name: "hello", path: "hello", args: [], return: "world" },
 			{ name: "someDeepNest", path: "some.deep.nest", args: [], return: "content" },
-			{ name: "someDeepInterpolated", path: "some.deep.interpolated", args: [{ name: "a", type: "number" }], return: "{ a : number }" },
-			{ name: "interpolator", path: "interpolator", args: [{ name: "value", type: "string" }], return: "some { value : string }" },
+			{ name: "someDeepInterpolated", path: "some.deep.interpolated", args: [{ name: "a", type: "number" }], return: "${a}" },
+			{ name: "interpolator", path: "interpolator", args: [{ name: "value", type: "string" }], return: "some ${value}" },
 		]);
 	});
 });

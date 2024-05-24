@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 
+import { toCamelCase } from "@diacritic/utilities";
 import { globSync } from "glob";
 
 export class ResourceGraph {
@@ -13,7 +14,7 @@ export class ResourceGraph {
 
 				const regex = new RegExp(pattern.replace("*", "(.*)"));
 				for (const file of files) {
-					const namespace = file.match(regex)?.[1] ?? "default";
+					const namespace = toCamelCase(file.match(regex)![1]!);
 
 					if (!this.graph[language]) this.graph[language] = {};
 					if (!this.graph[language]![namespace]) this.graph[language]![namespace] = [];
@@ -66,7 +67,7 @@ export class ResourceGraph {
 			const regex = new RegExp(resource.replaceAll("*", "(.*)").replace("{{language}}", "(.*)"));
 			const match = file.match(regex);
 
-			if (match) return { language: match[1]!, namespace: match[2]! };
+			if (match) return { language: match[1]!, namespace: toCamelCase(match[2]!) };
 		}
 
 		throw new Error(`Could not determine language and namespace from file: ${file}`);

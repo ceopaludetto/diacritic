@@ -24,7 +24,7 @@
 		"docs:preview": "vitepress preview documentation",
 		"lint:fix": "turbo lint --cache-dir=.turbo -- --fix && manypkg fix",
 		"lint": "turbo lint --cache-dir=.turbo && manypkg check",
-		"release": "bun run build && bun run docs:build && bun changesets publish",
+		"release": "bun run build && bun run docs:build && bun changeset publish",
 		"test:update": "turbo test --cache-dir=.turbo -- --update-snapshots",
 		"test": "turbo test --cache-dir=.turbo"
 	},

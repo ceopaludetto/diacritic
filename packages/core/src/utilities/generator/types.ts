@@ -58,11 +58,9 @@ export function generateTypes({
 	);
 
 	for (const [namespace, files] of Object.entries(entries)) {
-		const contents = files
-			.map(file => readFileSync(file, "utf-8"))
-			.flatMap(content => parser.convertFile(content));
-
+		const contents = files.map(file => readFileSync(file, "utf-8")).flatMap(parser.convertFile);
 		const structure = {};
+
 		for (const entry of contents) dset(structure, entry.path, functionFromEntry(entry));
 
 		declarations.push(
