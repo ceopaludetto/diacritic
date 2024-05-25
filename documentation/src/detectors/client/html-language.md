@@ -34,9 +34,22 @@ To use the HTML language attribute detector, import the `htmlLangAttributeDetect
 // @module: preserve
 import { detect } from "@diacritic/detector";
 import { htmlLangAttributeDetector } from "@diacritic/detector/client";
+import * as registry from "virtual:translations/registry";
 
-const language = detect(htmlLangAttributeDetector);
+const language = detect(registry, htmlLangAttributeDetector);
 diacritic.setLanguage(language);
 // ---cut-after---
+// @filename: translations.d.ts
 declare const diacritic: import("@diacritic/runtime").Diacritic;
+declare module "~translations/registry" {
+	export const defaultLanguage: "en";
+	export const languages: ("en" | "pt")[];
+	export const namespaces: ("common")[];
+
+	export type SupportedLanguages = typeof languages;
+	export type SupportedNamespaces = typeof namespaces;
+}
+declare module "virtual:translations/registry" {
+	export * from "~translations/registry";
+}
 ```

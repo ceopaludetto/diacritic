@@ -34,12 +34,25 @@ To use the accept language header detector, import the `acceptLanguageHeaderDete
 // @module: preserve
 import { detect } from "@diacritic/detector";
 import { acceptLanguageHeaderDetector } from "@diacritic/detector/server";
+import * as registry from "virtual:translations/registry";
 
 const header = request.headers.get("Accept-Language") ?? "";
 
-const language = detect(acceptLanguageHeaderDetector(header));
+const language = detect(registry, acceptLanguageHeaderDetector(header));
 diacritic.setLanguage(language);
 // ---cut-after---
 declare const request: Request;
+// @filename: translations.d.ts
 declare const diacritic: import("@diacritic/runtime").Diacritic;
+declare module "~translations/registry" {
+	export const defaultLanguage: "en";
+	export const languages: ("en" | "pt")[];
+	export const namespaces: ("common")[];
+
+	export type SupportedLanguages = typeof languages;
+	export type SupportedNamespaces = typeof namespaces;
+}
+declare module "virtual:translations/registry" {
+	export * from "~translations/registry";
+}
 ```

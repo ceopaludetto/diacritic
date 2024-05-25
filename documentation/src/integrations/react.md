@@ -39,6 +39,7 @@ import { detect } from "@diacritic/detector";
 import { htmlLangAttributeDetector } from "@diacritic/detector/client";
 import { DiacriticProvider, createDiacritic, useTranslation } from "@diacritic/react";
 import { createRoot } from "react-dom/client";
+import * as registry from "virtual:translations/registry";
 
 function Component() {
 	const { t } = useTranslation(["common"]);
@@ -47,8 +48,8 @@ function Component() {
 }
 
 async function main() {
-	const language = detect(htmlLangAttributeDetector);
-	const diacritic = await createDiacritic(language, ["common"]);
+	const language = detect(registry, htmlLangAttributeDetector);
+	const diacritic = await createDiacritic(registry, language, ["common"]);
 
 	createRoot(document.getElementById("root")!).render(
 		<DiacriticProvider diacritic={diacritic}>
@@ -65,6 +66,9 @@ declare module "~translations/registry" {
 
 	export type SupportedLanguages = typeof languages;
 	export type SupportedNamespaces = typeof namespaces;
+}
+declare module "virtual:translations/registry" {
+	export * from "~translations/registry";
 }
 declare module "~translations/proxy" {
 	type Proxy = {

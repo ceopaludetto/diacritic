@@ -1,13 +1,12 @@
 import type { Proxy } from "~translations/proxy";
-import type { SupportedLanguages, SupportedNamespaces } from "~translations/registry";
 
 import { capitalizeFirst } from "@diacritic/utilities";
 import { DeepProxy } from "proxy-deep";
 
-import { defaultLanguage, importTranslationModule, languages, namespaces } from "~translations/registry";
+type Registry = typeof import("~translations/registry");
 
-export type Language = SupportedLanguages[number];
-export type Namespace = SupportedNamespaces[number];
+export type Language = Registry["languages"][number];
+export type Namespace = Registry["namespaces"][number];
 
 function createProxy(language: Language,	modules: Record<Language, Record<Namespace, any>>) {
 	return new DeepProxy({}, {
@@ -50,14 +49,19 @@ function createProxy(language: Language,	modules: Record<Language, Record<Namesp
  * ```
  */
 class Diacritic {
-	public readonly defaultLanguage: Language = defaultLanguage;
-	public readonly languages: Language[] = languages;
-	public readonly namespaces: Namespace[] = namespaces;
+	public readonly registry!: Registry;
+	public readonly languages!: Language[];
+	public readonly namespaces!: Namespace[];
 
-	#current: Language = defaultLanguage;
+	#current!: Language;
 	#modules: Record<Language, Record<Namespace, any>> = {} as any;
 
 	#listeners: Set<(language: Language) => void> = new Set();
+
+	public constructor(registry: Registry, initialLanguage: Language = registry.defaultLanguage) {
+		this.registry = registry;
+		this.#current = initialLanguage;
+	}
 
 	public t!: Proxy;
 
@@ -105,7 +109,7 @@ class Diacritic {
 	};
 
 	async #loadModule(language: Language, namespace: Namespace) {
-		const module = await importTranslationModule(language, namespace);
+		const module = await this.registry.importTranslationModule(language, namespace);
 
 		if (!this.#modules[language]) this.#modules[language] = {} as any;
 		this.#modules[language]![namespace] = module;
@@ -117,24 +121,23 @@ class Diacritic {
  *
  * @example
  * ```ts
+ * import * as registry from "virtual:translations/registry";
+ *
  * const language = detect(htmlLangAttributeDetector); // Use the detector to get the initial language
- * const diacritic = await createDiacritic(language, ["common"]);
+ * const diacritic = await createDiacritic(registry, language, ["common"]);
  * ```
  *
+ * @param registry the registry object (import from virtual module "virtual:translations/registry")
  * @param language the initial language
  * @param initialNamespaces the initial namespaces to load
  * @returns a new instance of the Diacritic class
  */
-export async function createDiacritic(language: Language,	initialNamespaces: Namespace[]) {
-	const diacritic = new Diacritic();
-
-	diacritic.setLanguage(language);
+export async function createDiacritic(registry: Registry, language: Language,	initialNamespaces: Namespace[]) {
+	const diacritic = new Diacritic(registry, language);
 	await diacritic.loadModules([language], initialNamespaces);
 
 	return diacritic;
 }
-
-export { defaultLanguage, languages };
 
 export type { Diacritic };
 export type { Proxy };

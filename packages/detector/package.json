@@ -46,7 +46,6 @@
 		"lint": "eslint src"
 	},
 	"dependencies": {
-		"@diacritic/runtime": "workspace:",
 		"accept-language-parser": "^1.5.0",
 		"tiny-invariant": "^1.3.3"
 	},

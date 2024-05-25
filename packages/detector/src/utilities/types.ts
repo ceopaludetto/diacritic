@@ -1,3 +1,3 @@
-import type { Language } from "@diacritic/runtime";
+type Registry = typeof import("~translations/registry");
 
-export type LocaleDetector = (supported: Language[]) => Language[];
+export type LocaleDetector = (supported: Registry["languages"]) => Registry["languages"];

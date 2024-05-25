@@ -82,4 +82,5 @@ export function useTranslation<const N extends Namespace>(namespaces: N[]): UseT
 	return context;
 }
 
-export { createDiacritic, defaultLanguage, languages } from "@diacritic/runtime";
+export { createDiacritic } from "@diacritic/runtime";
+export type { Diacritic, Language, Namespace, Proxy } from "@diacritic/runtime";
