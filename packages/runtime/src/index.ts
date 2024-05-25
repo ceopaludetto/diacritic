@@ -9,7 +9,7 @@ export type Language = Registry["languages"][number];
 export type Namespace = Registry["namespaces"][number];
 
 function createProxy(language: Language,	modules: Record<Language, Record<Namespace, any>>) {
-	return new DeepProxy({}, {
+	const proxy: Proxy = new DeepProxy({}, {
 		get(_, property) {
 			if (typeof property !== "string") return;
 
@@ -32,9 +32,11 @@ function createProxy(language: Language,	modules: Record<Language, Record<Namesp
 			}, "");
 
 			const fn: any = modules[language]![namespace as Namespace][name];
-			return fn(...args);
+			return fn(proxy, ...args);
 		},
 	});
+
+	return proxy;
 }
 
 /**

@@ -10,10 +10,14 @@ export function functionName(parent: string[], key: string) {
 	}, "");
 }
 
-const regex = /\{\s*(\w+)\s*:\s*(\w+)\s*\}/g;
+// Match {name:type} or {name: type} or { name: type }
+const argumentRegex = /\{\s*(\w+)\s*:\s*(\w+)\s*\}/g;
+
+// Match $t.some.deep.random.name({name:type})
+const expansionRegex = /\$t\.(\w+(?:\.\w+)*)(\(\s*(?:(\{[^{}:]*:[^{}]*\}(?:\s*,\s*\{[^{}:]*:[^{}]*\})*)+\s*)?\))/g;
 
 export function extractArgumentsFromString(value: string): Entry["args"] {
-	const matches = value.matchAll(regex);
+	const matches = value.matchAll(argumentRegex);
 
 	const args: Entry["args"] = [];
 	for (const match of matches) {
@@ -24,4 +28,17 @@ export function extractArgumentsFromString(value: string): Entry["args"] {
 	}
 
 	return args;
+}
+
+export function transformReturnFromString(proxyName: string, value: string): string {
+	let current = value;
+
+	for (const match of value.matchAll(expansionRegex)) {
+		const [content, path, , variables] = match;
+		const args = variables ? extractArgumentsFromString(variables) : [];
+
+		current = value.replace(content, `\${${proxyName}.${path}(${args.map(item => item.name).join(", ")})}`);
+	}
+
+	return current.replace(argumentRegex, (_, name) => `\${${name}}`);
 }

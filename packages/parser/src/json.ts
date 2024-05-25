@@ -2,9 +2,8 @@ import type { Entry, Parser } from "@diacritic/core";
 
 import { toCamelCase } from "@diacritic/utilities";
 
-import { extractArgumentsFromString, functionName } from "./utilities/parser";
-
-const regex = /\{\s*(\w+)\s*:\s*(\w+)\s*\}/g;
+import { nanoid } from "./utilities/nanoid";
+import { extractArgumentsFromString, functionName, transformReturnFromString } from "./utilities/parser";
 
 function parseContent(content: Record<string, any>, parent: string[] = []): Entry[] {
 	return Object.entries(content)
@@ -16,7 +15,10 @@ function parseContent(content: Record<string, any>, parent: string[] = []): Entr
 					const name = functionName(parent, key);
 					const args = onlyStrings.flatMap(extractArgumentsFromString);
 
-					const strs = onlyStrings.map((str: string) => str.replace(regex, (_, name) => `\${${name}}`));
+					const proxyName = nanoid();
+					args.unshift({ name: proxyName, type: "Proxy" });
+
+					const strs = onlyStrings.map(item => transformReturnFromString(proxyName, item));
 					const fn = { name, path: [...parent, toCamelCase(key)].join("."), args, return: strs };
 
 					return [...acc, fn];
@@ -29,7 +31,10 @@ function parseContent(content: Record<string, any>, parent: string[] = []): Entr
 				const name = functionName(parent, key);
 				const args = extractArgumentsFromString(value);
 
-				const str = value.replace(regex, (_, name) => `\${${name}}`);
+				const proxyName = nanoid();
+				args.unshift({ name: proxyName, type: "Proxy" });
+
+				const str = transformReturnFromString(proxyName, value);
 				const fn = { name, path: [...parent, toCamelCase(key)].join("."), args, return: str };
 
 				return [...acc, fn];
