@@ -1,5 +1,14 @@
 # @diacritic/react
 
+## 0.0.5
+
+### Patch Changes
+
+- [#12](https://github.com/ceopaludetto/diacritic/pull/12) [`8544450`](https://github.com/ceopaludetto/diacritic/commit/8544450dd10f8b46c8e231a232c38ca49d3ac70d) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Add expansion support for the JSON parser
+
+- Updated dependencies [[`8544450`](https://github.com/ceopaludetto/diacritic/commit/8544450dd10f8b46c8e231a232c38ca49d3ac70d)]:
+  - @diacritic/runtime@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes
