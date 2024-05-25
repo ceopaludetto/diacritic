@@ -69,7 +69,7 @@ export type Entry = {
 	 * The function return
 	 * @example "Title"
 	 */
-	return: string;
+	return: string | string[];
 };
 
 export type Parser = {

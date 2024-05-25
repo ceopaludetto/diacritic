@@ -13,7 +13,7 @@ async function main() {
 	createRoot(document.getElementById("root")!).render(
 		<DiacriticProvider diacritic={diacritic}>
 			<StrictMode>
-				<Suspense>
+				<Suspense fallback="loading...">
 					<Application />
 				</Suspense>
 			</StrictMode>

@@ -9,7 +9,8 @@ const json = JSON.stringify({
 	interpolator: "some { value : string }",
 	ignore: 16,
 	non: false,
-	stringOrObject: [""],
+	stringOrObject: Symbol.for("abuble"),
+	butKeepArrays: [1, false, "string", "another"],
 });
 
 describe("parseJson", () => {
@@ -29,6 +30,7 @@ describe("parseJson", () => {
 			{ name: "someDeepNest", path: "some.deep.nest", args: [], return: "content" },
 			{ name: "someDeepInterpolated", path: "some.deep.interpolated", args: [{ name: "a", type: "number" }], return: "${a}" },
 			{ name: "interpolator", path: "interpolator", args: [{ name: "value", type: "string" }], return: "some ${value}" },
+			{ name: "butKeepArrays", path: "butKeepArrays", args: [], return: ["string", "another"] },
 		]);
 	});
 });

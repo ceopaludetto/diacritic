@@ -3,5 +3,6 @@
 		"switch": "Change language"
 	},
 	"hello": "Hello World!",
-	"interpolation": "Value {value:number}"
+	"interpolation": "Value {value:number}",
+	"arr": ["some", "string"]
 }
