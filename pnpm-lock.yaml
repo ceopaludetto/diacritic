@@ -140,9 +140,6 @@ importers:
 
   packages/detector:
     dependencies:
-      '@diacritic/runtime':
-        specifier: 'workspace:'
-        version: link:../runtime
       accept-language-parser:
         specifier: ^1.5.0
         version: 1.5.0

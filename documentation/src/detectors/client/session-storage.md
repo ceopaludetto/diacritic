@@ -34,9 +34,22 @@ To use the session storage detector, import the `sessionStorageDetector` functio
 // @module: preserve
 import { detect } from "@diacritic/detector";
 import { sessionStorageDetector } from "@diacritic/detector/client";
+import * as registry from "virtual:translations/registry";
 
-const language = detect(sessionStorageDetector("key"));
+const language = detect(registry, sessionStorageDetector("key"));
 diacritic.setLanguage(language);
 // ---cut-after---
+// @filename: translations.d.ts
 declare const diacritic: import("@diacritic/runtime").Diacritic;
+declare module "~translations/registry" {
+	export const defaultLanguage: "en";
+	export const languages: ("en" | "pt")[];
+	export const namespaces: ("common")[];
+
+	export type SupportedLanguages = typeof languages;
+	export type SupportedNamespaces = typeof namespaces;
+}
+declare module "virtual:translations/registry" {
+	export * from "~translations/registry";
+}
 ```

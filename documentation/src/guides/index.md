@@ -163,8 +163,9 @@ Now you can use the generated translations in your code, but first you need to c
 // @filename: index.ts
 // ---cut-before---
 import { createDiacritic } from "@diacritic/runtime";
+import * as registry from "virtual:translations/registry";
 
-const diacritic = await createDiacritic("en", ["common"]);
+const diacritic = await createDiacritic(registry, "en", ["common"]);
 
 console.log(diacritic.t.common.hello());
 console.log(diacritic.t.common.nameAndAge("John", 25));
@@ -178,6 +179,9 @@ declare module "~translations/registry" {
 
 	export type SupportedLanguages = typeof languages;
 	export type SupportedNamespaces = typeof namespaces;
+}
+declare module "virtual:translations/registry" {
+	export * from "~translations/registry";
 }
 declare module "~translations/proxy" {
 	type Proxy = {
@@ -219,43 +223,6 @@ declare module "~translations/proxy" {
 
 declare module "virtual:translations/proxy" {
 	export * from "~translations/proxy";
-}
-```
-
-You can import the `virtual:translations/registry` module if you want but it's not necessary, these informations are used at runtime. Instead retrieve these informations directly in the diacritic instance:
-
-```ts twoslash
-// @filename: index.ts
-// ---cut-before---
-import type { Language, Namespace } from "@diacritic/runtime";
-
-import { createDiacritic } from "@diacritic/runtime";
-
-const diacritic = await createDiacritic("en", ["common"]);
-
-diacritic.language; // current language
-
-diacritic.languages; // supported languages
-diacritic.namespaces; // supported namespaces
-
-diacritic.defaultLanguage; // fallback language
-
-const language: Language = "en";
-const namespace: Namespace = "common";
-// ---cut-after---
-// @filename: translations.d.ts
-declare module "~translations/registry" {
-	export const defaultLanguage: "en";
-	export const languages: ("en" | "pt")[];
-	export const namespaces: ("common")[];
-
-	export type SupportedLanguages = typeof languages;
-	export type SupportedNamespaces = typeof namespaces;
-}
-declare module "~translations/proxy" {
-	type Proxy = {
-		common: object;
-	};
 }
 ```
 
