@@ -4,5 +4,6 @@
 	},
 	"hello": "Olá mundo!",
 	"interpolation": "Valor {value:number}",
-	"arr": ["alguma", "string"]
+	"arr": ["alguma", "string"],
+	"expansion": "Expansão $t.common.hello()"
 }

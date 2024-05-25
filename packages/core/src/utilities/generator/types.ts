@@ -24,7 +24,9 @@ function toUnion(arr: string[]) {
 }
 
 function functionFromEntry(entry: Entry) {
-	return `(${entry.args.map(item => item.name + ": " + item.type)}) => ${Array.isArray(entry.return) ? "string[]" : "string"}`;
+	// explicit ignore Proxy argument
+	const args = entry.args.filter(item => item.type !== "Proxy").map(item => item.name + ": " + item.type);
+	return `(${args}) => ${Array.isArray(entry.return) ? "string[]" : "string"}`;
 }
 
 export function generateTypes({

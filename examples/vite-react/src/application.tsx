@@ -9,6 +9,7 @@ export function Application() {
 			<p>{t.withHyphen.someKey()}</p>
 			<p>{t.common.interpolation(10)}</p>
 			<p>{t.common.arr().join(" ")}</p>
+			<p>{t.common.expansion()}</p>
 			<button onClick={() => setLanguage(language === "en" ? "pt" : "en")}>
 				{t.common.actions.switch()}
 			</button>
