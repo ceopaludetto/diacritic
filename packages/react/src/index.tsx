@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import invariant from "tiny-invariant";
 
-import { usePromise } from "./utilities/hooks";
+import { useLoadModules } from "./utilities/hooks";
 
 const DiacriticContext = createContext<Diacritic | null>(null);
 
@@ -69,7 +69,7 @@ export function useTranslation<const N extends Namespace>(namespaces: N[]): UseT
 	const [, forceUpdate] = useReducer(x => x + 1, 0);
 
 	invariant(!!context, "useTranslation must be wrapped by a DiacriticProvider");
-	usePromise(context.loadModules.bind(context), [context.language], namespaces);
+	useLoadModules(context, namespaces);
 
 	useEffect(() => {
 		const dispose = context.onChange(forceUpdate);

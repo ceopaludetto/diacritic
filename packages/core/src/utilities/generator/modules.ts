@@ -5,9 +5,13 @@ import { EOL } from "node:os";
 import { prefixes } from "../loader";
 
 export function createFunctionFromEntry(entry: Entry) {
+	const r = Array.isArray(entry.return)
+		? "[" + entry.return.map(item => `\`${item}\``).join(", ") + "]"
+		: `\`${entry.return}\``;
+
 	return [
 		`export function ${entry.name}(${entry.args.map(item => item.name + ": " + item.type)}) {`,
-		`\treturn \`${entry.return}\`;`,
+		`\treturn ${r};`,
 		`}`,
 	].join(EOL);
 }

@@ -24,7 +24,7 @@ function toUnion(arr: string[]) {
 }
 
 function functionFromEntry(entry: Entry) {
-	return `(${entry.args.map(item => item.name + ": " + item.type)}) => string`;
+	return `(${entry.args.map(item => item.name + ": " + item.type)}) => ${Array.isArray(entry.return) ? "string[]" : "string"}`;
 }
 
 export function generateTypes({

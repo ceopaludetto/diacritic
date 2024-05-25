@@ -77,18 +77,34 @@ class Diacritic {
 		return () => this.#listeners.delete(listener);
 	};
 
-	public async loadModules(languages: Language[], namespaces: Namespace[]) {
-		const promises = [];
+	public loadModules = async (languages: Language[], namespaces: Namespace[]) => {
+		const promises: Promise<void>[] = [];
 		for (const language of languages) {
-			for (const namespace of namespaces)
-				promises.push(this.loadModule(language, namespace));
+			for (const namespace of namespaces) {
+				if (this.#modules[language] && this.#modules[language]![namespace]) continue;
+				promises.push(this.#loadModule(language, namespace));
+			}
 		}
+
+		if (promises.length === 0) return;
 
 		await Promise.all(promises);
 		this.t = createProxy(this.#current, this.#modules);
-	}
+	};
 
-	private async loadModule(language: Language, namespace: Namespace) {
+	public needToLoadModules = (languages: Language[], namespaces: Namespace[]) => {
+		const missing = [];
+		for (const language of languages) {
+			for (const namespace of namespaces) {
+				if (this.#modules[language] && this.#modules[language]![namespace]) continue;
+				missing.push({ language, namespace });
+			}
+		}
+
+		return missing.length > 0;
+	};
+
+	async #loadModule(language: Language, namespace: Namespace) {
 		const module = await importTranslationModule(language, namespace);
 
 		if (!this.#modules[language]) this.#modules[language] = {} as any;
