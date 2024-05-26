@@ -7,7 +7,9 @@ const supported = ["en-US", "pt-BR"];
 describe("acceptLanguageHeaderDetector", () => {
 	it("should return the first supported locale from the Accept-Language header", () => {
 		const detector = acceptLanguageHeaderDetector("en-US,pt-BR;q=0.9");
+
 		expect(detector(supported)).toStrictEqual(["en-US"]);
+		expect(detector(["en", "pt"])).toStrictEqual(["en"]);
 	});
 });
 

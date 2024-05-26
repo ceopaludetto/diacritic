@@ -2,7 +2,7 @@
 	"name": "@diacritic/detector",
 	"type": "module",
 	"version": "0.0.5",
-	"sideEffects": true,
+	"sideEffects": false,
 	"exports": {
 		".": {
 			"import": {
