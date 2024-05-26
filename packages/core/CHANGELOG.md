@@ -1,5 +1,16 @@
 # @diacritic/core
 
+## 0.0.6
+
+### Patch Changes
+
+- [#14](https://github.com/ceopaludetto/diacritic/pull/14) [`c469eac`](https://github.com/ceopaludetto/diacritic/commit/c469eaca7d2f4487f068a2f4df0218218903a676) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Add missing \* on workspace protocol
+
+- [#14](https://github.com/ceopaludetto/diacritic/pull/14) [`c469eac`](https://github.com/ceopaludetto/diacritic/commit/c469eaca7d2f4487f068a2f4df0218218903a676) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Make the accept header parser loose
+
+- Updated dependencies [[`c469eac`](https://github.com/ceopaludetto/diacritic/commit/c469eaca7d2f4487f068a2f4df0218218903a676), [`c469eac`](https://github.com/ceopaludetto/diacritic/commit/c469eaca7d2f4487f068a2f4df0218218903a676)]:
+  - @diacritic/utilities@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
