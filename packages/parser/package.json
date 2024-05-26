@@ -26,8 +26,8 @@
 		"lint": "eslint src"
 	},
 	"dependencies": {
-		"@diacritic/core": "workspace:",
-		"@diacritic/utilities": "workspace:",
+		"@diacritic/core": "workspace:*",
+		"@diacritic/utilities": "workspace:*",
 		"nanoid": "^5.0.7",
 		"tiny-invariant": "^1.3.3"
 	}

@@ -6,7 +6,7 @@ import invariant from "tiny-invariant";
 
 import { useLoadModules } from "./utilities/hooks";
 
-const DiacriticContext = createContext<Diacritic | null>(null);
+export const DiacriticContext = createContext<Diacritic | null>(null);
 
 /**
  * This component is used to provide the Diacritic object to the children components.

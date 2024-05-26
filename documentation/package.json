@@ -10,11 +10,11 @@
 		"preview": "vitepress preview ."
 	},
 	"dependencies": {
-		"@diacritic/core": "workspace:",
-		"@diacritic/detector": "workspace:",
-		"@diacritic/parser": "workspace:",
-		"@diacritic/react": "workspace:",
-		"@diacritic/runtime": "workspace:",
+		"@diacritic/core": "workspace:*",
+		"@diacritic/detector": "workspace:*",
+		"@diacritic/parser": "workspace:*",
+		"@diacritic/react": "workspace:*",
+		"@diacritic/runtime": "workspace:*",
 		"vitepress": "^1.2.2"
 	},
 	"devDependencies": {

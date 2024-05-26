@@ -32,6 +32,10 @@ function createProxy(language: Language,	modules: Record<Language, Record<Namesp
 			}, "");
 
 			const fn: any = modules[language]![namespace as Namespace][name];
+
+			if (typeof fn !== "function")
+				throw new Error(`Function ${name} is not defined in namespace ${namespace}`);
+
 			return fn(proxy, ...args);
 		},
 	});
