@@ -1,5 +1,14 @@
 # @diacritic/react
 
+## 0.0.7
+
+### Patch Changes
+
+- [#19](https://github.com/ceopaludetto/diacritic/pull/19) [`74561dc`](https://github.com/ceopaludetto/diacritic/commit/74561dc08139544613f6324a4a6ecc70a3705655) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Remove createDiacritic utility
+
+- Updated dependencies [[`74561dc`](https://github.com/ceopaludetto/diacritic/commit/74561dc08139544613f6324a4a6ecc70a3705655)]:
+  - @diacritic/runtime@0.0.7
+
 ## 0.0.6
 
 ### Patch Changes
