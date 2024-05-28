@@ -54,7 +54,7 @@ function createProxy(language: Language,	modules: Record<Language, Record<Namesp
  * const diacritic = await createDiacritic("en", ["common"]);
  * ```
  */
-class Diacritic {
+export class Diacritic {
 	public readonly registry!: Registry;
 	public readonly languages!: Language[];
 	public readonly namespaces!: Namespace[];
@@ -122,28 +122,4 @@ class Diacritic {
 	}
 }
 
-/**
- * This function is used to create a new instance of the Diacritic class.
- *
- * @example
- * ```ts
- * import * as registry from "virtual:translations/registry";
- *
- * const language = detect(htmlLangAttributeDetector); // Use the detector to get the initial language
- * const diacritic = await createDiacritic(registry, language, ["common"]);
- * ```
- *
- * @param registry the registry object (import from virtual module "virtual:translations/registry")
- * @param language the initial language
- * @param initialNamespaces the initial namespaces to load
- * @returns a new instance of the Diacritic class
- */
-export async function createDiacritic(registry: Registry, language: Language,	initialNamespaces: Namespace[]) {
-	const diacritic = new Diacritic(registry, language);
-	await diacritic.loadModules([language], initialNamespaces);
-
-	return diacritic;
-}
-
-export type { Diacritic };
 export type { Proxy };

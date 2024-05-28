@@ -2,7 +2,7 @@ import { render, renderHook } from "@testing-library/react";
 import { useContext } from "react";
 import { describe, expect, it, vi } from "vitest";
 
-import { DiacriticContext, DiacriticProvider, createDiacritic, useTranslation } from "~/index";
+import { Diacritic, DiacriticContext, DiacriticProvider, useTranslation } from "~/index";
 
 const importTranslationModule = vi.fn().mockResolvedValue({});
 
@@ -15,7 +15,8 @@ const registry = {
 
 describe("<DiacriticProvider/>", () => {
 	it("should render correctly", async () => {
-		const instance = await createDiacritic(registry, "en", ["common"]);
+		const instance = new Diacritic(registry, "en");
+		await instance.loadModules(["en"], ["common"]);
 
 		const { getByText } = render(
 			<DiacriticProvider diacritic={instance}>
@@ -27,7 +28,8 @@ describe("<DiacriticProvider/>", () => {
 	});
 
 	it("should provide diacritic instance correctly", async () => {
-		const instance = await createDiacritic(registry, "en", ["common"]);
+		const instance = new Diacritic(registry, "en");
+		await instance.loadModules(["en"], ["common"]);
 
 		function useDiacriticContext() {
 			return useContext(DiacriticContext);
@@ -47,7 +49,8 @@ describe("<DiacriticProvider/>", () => {
 
 describe("useTranslation()", () => {
 	it("should return the diacritic instance", async () => {
-		const instance = await createDiacritic(registry, "en", ["common"]);
+		const instance = new Diacritic(registry, "en");
+		await instance.loadModules(["en"], ["common"]);
 
 		const { result } = renderHook(() => useTranslation(["common"]), {
 			wrapper: ({ children }) => (
@@ -61,7 +64,8 @@ describe("useTranslation()", () => {
 	});
 
 	it("should rerender on language change", async () => {
-		const instance = await createDiacritic(registry, "en", ["common"]);
+		const instance = new Diacritic(registry, "en");
+		await instance.loadModules(["en"], ["common"]);
 
 		const { result } = renderHook(() => useTranslation(["common"]), {
 			wrapper: ({ children }) => (

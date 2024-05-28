@@ -162,10 +162,11 @@ Now you can use the generated translations in your code, but first you need to c
 ```ts twoslash
 // @filename: index.ts
 // ---cut-before---
-import { createDiacritic } from "@diacritic/runtime";
+import { Diacritic } from "@diacritic/runtime";
 import * as registry from "virtual:translations/registry";
 
-const diacritic = await createDiacritic(registry, "en", ["common"]);
+const diacritic = new Diacritic(registry, "en");
+await diacritic.loadModules(["en"], ["common"]);
 
 console.log(diacritic.t.common.hello());
 console.log(diacritic.t.common.nameAndAge("John", 25));

@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from "vitest";
 
-import { createDiacritic } from "~/index";
+import { Diacritic } from "~/index";
 
 const importTranslationModule = vi.fn();
 
@@ -16,7 +16,8 @@ afterEach(() => {
 });
 
 it("should create a diacritic runtime correctly", async () => {
-	const runtime = await createDiacritic(registry, "en", ["common"]);
+	const runtime = new Diacritic(registry, "en");
+	await runtime.loadModules(["en"], ["common"]);
 
 	expect(runtime).not.toBeUndefined();
 	expect(runtime.language).toBe("en");
@@ -24,7 +25,8 @@ it("should create a diacritic runtime correctly", async () => {
 });
 
 it("should change language correctly", async () => {
-	const runtime = await createDiacritic(registry, "en", ["common"]);
+	const runtime = new Diacritic(registry, "en");
+	await runtime.loadModules(["en"], ["common"]);
 
 	expect(runtime.language).toBe("en");
 	runtime.setLanguage("pt");
@@ -32,7 +34,9 @@ it("should change language correctly", async () => {
 });
 
 it("should listen to language change correctly", async () => {
-	const runtime = await createDiacritic(registry, "en", ["common"]);
+	const runtime = new Diacritic(registry, "en");
+	await runtime.loadModules(["en"], ["common"]);
+
 	const onChange = vi.fn();
 
 	const dispose = runtime.onChange(onChange);
@@ -49,7 +53,8 @@ it("should listen to language change correctly", async () => {
 it("should load new modules correctly", async () => {
 	importTranslationModule.mockResolvedValue({});
 
-	const runtime = await createDiacritic(registry, "en", ["common"]);
+	const runtime = new Diacritic(registry, "en");
+	await runtime.loadModules(["en"], ["common"]);
 
 	expect(runtime.needToLoadModules(["pt"], ["common"])).toBe(true);
 	expect(runtime.needToLoadModules(["en"], ["common"])).toBe(false);
@@ -66,7 +71,8 @@ it("should call translation functions correctly", async () => {
 		hello: () => "world",
 	});
 
-	const runtime = await createDiacritic(registry, "en", ["common"]);
+	const runtime = new Diacritic(registry, "en");
+	await runtime.loadModules(["en"], ["common"]);
 
 	expect((runtime.t as any).another).toThrow("Namespace another is not loaded");
 	expect((runtime.t as any).common.nonExistent).toThrow("Function nonExistent is not defined in namespace common");
