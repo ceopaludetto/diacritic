@@ -37,7 +37,7 @@ To use the Diacritic React integration, you will need to import the `DiacriticPr
 // ---cut-before---
 import { detect } from "@diacritic/detector";
 import { htmlLangAttributeDetector } from "@diacritic/detector/client";
-import { DiacriticProvider, createDiacritic, useTranslation } from "@diacritic/react";
+import { Diacritic, DiacriticProvider, useTranslation } from "@diacritic/react";
 import { createRoot } from "react-dom/client";
 import * as registry from "virtual:translations/registry";
 
@@ -49,7 +49,9 @@ function Component() {
 
 async function main() {
 	const language = detect(registry, htmlLangAttributeDetector);
-	const diacritic = await createDiacritic(registry, language, ["common"]);
+	const diacritic = new Diacritic(registry, language);
+
+	await diacritic.loadModules([language], ["common"]);
 
 	createRoot(document.getElementById("root")!).render(
 		<DiacriticProvider diacritic={diacritic}>
