@@ -1,5 +1,11 @@
 # @diacritic/utilities
 
+## 0.0.8
+
+### Patch Changes
+
+- [#21](https://github.com/ceopaludetto/diacritic/pull/21) [`3e9413d`](https://github.com/ceopaludetto/diacritic/commit/3e9413db32e1a8ba80455373f1766f150f933ded) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Remove private properties (incompatible with React Native)
+
 ## 0.0.7
 
 ### Patch Changes
