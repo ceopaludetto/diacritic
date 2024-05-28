@@ -1,5 +1,14 @@
 # @diacritic/react
 
+## 0.0.9
+
+### Patch Changes
+
+- [#23](https://github.com/ceopaludetto/diacritic/pull/23) [`ce44272`](https://github.com/ceopaludetto/diacritic/commit/ce44272da963f5e3105a8f1e6e59f79ce9466b99) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Bundle proxy-deep with runtime
+
+- Updated dependencies [[`ce44272`](https://github.com/ceopaludetto/diacritic/commit/ce44272da963f5e3105a8f1e6e59f79ce9466b99)]:
+  - @diacritic/runtime@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes
