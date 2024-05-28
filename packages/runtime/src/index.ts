@@ -59,54 +59,54 @@ export class Diacritic {
 	public readonly languages!: Language[];
 	public readonly namespaces!: Namespace[];
 
-	#current!: Language;
-	#modules: Record<Language, Record<Namespace, any>> = {} as any;
+	private current!: Language;
+	private modules: Record<Language, Record<Namespace, any>> = {} as any;
 
-	#listeners: Set<(language: Language) => void> = new Set();
+	private listeners: Set<(language: Language) => void> = new Set();
 
 	public constructor(registry: Registry, initialLanguage: Language = registry.defaultLanguage) {
 		this.registry = registry;
-		this.#current = initialLanguage;
+		this.current = initialLanguage;
 	}
 
 	public t!: Proxy;
 
 	public get language(): Language {
-		return this.#current;
+		return this.current;
 	};
 
 	public setLanguage = (language: Language) => {
-		this.#current = language;
-		this.#listeners.forEach(listener => listener(language));
+		this.current = language;
+		this.listeners.forEach(listener => listener(language));
 
-		this.t = createProxy(this.#current, this.#modules);
+		this.t = createProxy(this.current, this.modules);
 	};
 
 	public onChange = (listener: (language: Language) => void) => {
-		this.#listeners.add(listener);
-		return () => this.#listeners.delete(listener);
+		this.listeners.add(listener);
+		return () => this.listeners.delete(listener);
 	};
 
 	public loadModules = async (languages: Language[], namespaces: Namespace[]) => {
 		const promises: Promise<void>[] = [];
 		for (const language of languages) {
 			for (const namespace of namespaces) {
-				if (this.#modules[language] && this.#modules[language]![namespace]) continue;
-				promises.push(this.#loadModule(language, namespace));
+				if (this.modules[language] && this.modules[language]![namespace]) continue;
+				promises.push(this.loadModule(language, namespace));
 			}
 		}
 
 		if (promises.length === 0) return;
 
 		await Promise.all(promises);
-		this.t = createProxy(this.#current, this.#modules);
+		this.t = createProxy(this.current, this.modules);
 	};
 
 	public needToLoadModules = (languages: Language[], namespaces: Namespace[]) => {
 		const missing = [];
 		for (const language of languages) {
 			for (const namespace of namespaces) {
-				if (this.#modules[language] && this.#modules[language]![namespace]) continue;
+				if (this.modules[language] && this.modules[language]![namespace]) continue;
 				missing.push({ language, namespace });
 			}
 		}
@@ -114,11 +114,11 @@ export class Diacritic {
 		return missing.length > 0;
 	};
 
-	async #loadModule(language: Language, namespace: Namespace) {
+	private async loadModule(language: Language, namespace: Namespace) {
 		const module = await this.registry.importTranslationModule(language, namespace);
 
-		if (!this.#modules[language]) this.#modules[language] = {} as any;
-		this.#modules[language]![namespace] = module;
+		if (!this.modules[language]) this.modules[language] = {} as any;
+		this.modules[language]![namespace] = module;
 	}
 }
 
