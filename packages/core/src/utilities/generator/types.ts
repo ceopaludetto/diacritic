@@ -14,7 +14,6 @@ type GenerateTypesOptions = {
 	defaultLanguage: string;
 	generation: DiacriticGenerationOptions;
 	languages: string[];
-	namespaces: string[];
 	parser: Parser;
 	resourceGraph: ResourceGraph;
 };
@@ -33,11 +32,12 @@ export function generateTypes({
 	defaultLanguage,
 	generation,
 	languages,
-	namespaces,
 	parser,
 	resourceGraph,
 }: GenerateTypesOptions) {
 	const entries = resourceGraph.allEntriesForLanguage(defaultLanguage);
+	const namespaces = resourceGraph.allNamespaces();
+
 	const declarations: string[] = generation?.banner ?? [];
 
 	declarations.push(

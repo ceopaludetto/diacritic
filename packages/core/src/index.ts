@@ -22,18 +22,24 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 	languages,
 	parser,
 	resources,
-}) => {
+}, meta) => {
 	const resourceGraph = new ResourceGraph(languages, resources);
 	const processedIDs = new Set<string>();
+
+	let ran = false;
 
 	return {
 		name: "diacritic",
 		enforce: "pre",
 		buildStart() {
-			for (const file of resourceGraph.allFiles()) this.addWatchFile(file);
+			if (meta.framework !== "esbuild")
+				for (const file of resourceGraph.allFiles()) this.addWatchFile(file);
 
-			const namespaces = resourceGraph.allNamespaces();
-			generateTypes({ defaultLanguage, generation, languages, namespaces, parser, resourceGraph });
+			if (meta.framework !== "esbuild" || !ran) {
+				generateTypes({ defaultLanguage, generation, languages, parser, resourceGraph });
+
+				ran = true;
+			}
 		},
 		watchChange: (id, change) => {
 			if (!isResource(id, resources)) return;
@@ -41,8 +47,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			if (change.event === "create") resourceGraph.addFile(id, resources);
 			if (change.event === "delete") resourceGraph.removeFile(id, resources);
 
-			const namespaces = resourceGraph.allNamespaces();
-			generateTypes({ defaultLanguage, generation, languages, namespaces, parser, resourceGraph });
+			generateTypes({ defaultLanguage, generation, languages, parser, resourceGraph });
 		},
 		resolveId: (id) => {
 			if (isTranslationPath(id)) return normalizeTranslationPath(id) + ".ts";
