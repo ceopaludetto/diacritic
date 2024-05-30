@@ -1,5 +1,15 @@
 # @diacritic/parser
 
+## 0.0.10
+
+### Patch Changes
+
+- [#25](https://github.com/ceopaludetto/diacritic/pull/25) [`aa826a1`](https://github.com/ceopaludetto/diacritic/commit/aa826a1c267b59405f0d302021b5701e5152745d) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Downgrade nanoid to support CJS environments
+
+- Updated dependencies [[`aa826a1`](https://github.com/ceopaludetto/diacritic/commit/aa826a1c267b59405f0d302021b5701e5152745d)]:
+  - @diacritic/core@0.0.10
+  - @diacritic/utilities@0.0.10
+
 ## 0.0.9
 
 ### Patch Changes

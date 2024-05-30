@@ -1,5 +1,11 @@
 # @diacritic/detector
 
+## 0.0.10
+
+### Patch Changes
+
+- [#25](https://github.com/ceopaludetto/diacritic/pull/25) [`aa826a1`](https://github.com/ceopaludetto/diacritic/commit/aa826a1c267b59405f0d302021b5701e5152745d) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Downgrade nanoid to support CJS environments
+
 ## 0.0.9
 
 ### Patch Changes
