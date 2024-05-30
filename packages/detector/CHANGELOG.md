@@ -1,5 +1,11 @@
 # @diacritic/detector
 
+## 0.0.11
+
+### Patch Changes
+
+- [#27](https://github.com/ceopaludetto/diacritic/pull/27) [`12e38b2`](https://github.com/ceopaludetto/diacritic/commit/12e38b2d16f8a819c5b96489f186d71a0f2ed712) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Add a more standard package to deal with the proxy to avoid conflicts in legacy modern resolutions
+
 ## 0.0.10
 
 ### Patch Changes
