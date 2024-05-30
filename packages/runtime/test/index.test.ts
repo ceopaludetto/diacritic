@@ -69,6 +69,7 @@ it("should load new modules correctly", async () => {
 it("should call translation functions correctly", async () => {
 	importTranslationModule.mockResolvedValue({
 		hello: () => "world",
+		someReallyDeepFunction: () => "deep",
 	});
 
 	const runtime = new Diacritic(registry, "en");
@@ -84,4 +85,5 @@ it("should call translation functions correctly", async () => {
 	runtime.setLanguage("en");
 
 	expect((runtime.t as any).common.hello()).toBe("world");
+	expect((runtime.t as any).common.some.really.deep.function()).toBe("deep");
 });

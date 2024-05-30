@@ -1,22 +1,31 @@
 import type { Proxy } from "~translations/proxy";
 
-import { capitalizeFirst } from "@diacritic/utilities";
-import { DeepProxy } from "proxy-deep";
+import { toCamelCase } from "@diacritic/utilities";
+import { DeepProxy } from "@qiwi/deep-proxy";
 
 type Registry = typeof import("~translations/registry");
 
 export type Language = Registry["languages"][number];
 export type Namespace = Registry["namespaces"][number];
 
-function createProxy(language: Language,	modules: Record<Language, Record<Namespace, any>>) {
-	const proxy: Proxy = new DeepProxy({}, {
-		get(_, property) {
-			if (typeof property !== "string") return;
+function emptyFn() {}
 
-			return this.nest(() => {});
-		},
-		apply(_, __, args) {
-			const [namespace, ...path] = this.path;
+function createProxy(language: Language, modules: Record<Language, Record<Namespace, any>>) {
+	const proxy: Proxy = new DeepProxy({}, ({ trapName, path, args, DEFAULT, PROXY }) => {
+		if (trapName === "set") throw new TypeError("Cannot set properties on a Diacritic proxy object");
+
+		if (trapName === "get") {
+			if (path.length === 0 && !modules[language]) console.warn(`[Diacritic] language ${language} is not loaded`);
+
+			const [namespace] = path;
+			if (namespace && !modules[language]?.[namespace as Namespace])
+				console.warn(`[Diacritic] namespace ${namespace} is not loaded in language ${language}`);
+
+			return PROXY(emptyFn);
+		}
+
+		if (trapName === "apply") {
+			const [namespace, ...rest] = path;
 
 			if (!namespace) throw new Error("Namespace is not specified");
 
@@ -26,18 +35,16 @@ function createProxy(language: Language,	modules: Record<Language, Record<Namesp
 			if (!modules[language]![namespace as Language])
 				throw new Error(`Namespace ${namespace} is not loaded`);
 
-			const name = path.reduce((acc, item, index) => {
-				if (index === 0) return item;
-				return acc + capitalizeFirst(item);
-			}, "");
-
+			const name = toCamelCase(rest.join("-"));
 			const fn: any = modules[language]![namespace as Namespace][name];
 
 			if (typeof fn !== "function")
 				throw new Error(`Function ${name} is not defined in namespace ${namespace}`);
 
 			return fn(proxy, ...args);
-		},
+		}
+
+		return DEFAULT;
 	});
 
 	return proxy;
