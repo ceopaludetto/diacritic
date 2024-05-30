@@ -1,5 +1,11 @@
 # @diacritic/detector
 
+## 0.0.12
+
+### Patch Changes
+
+- [#29](https://github.com/ceopaludetto/diacritic/pull/29) [`bf25582`](https://github.com/ceopaludetto/diacritic/commit/bf25582e5901084d058de28bf09559815365bd6a) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Add rspack support
+
 ## 0.0.11
 
 ### Patch Changes
