@@ -1,5 +1,14 @@
 # @diacritic/runtime
 
+## 0.0.12
+
+### Patch Changes
+
+- [#29](https://github.com/ceopaludetto/diacritic/pull/29) [`bf25582`](https://github.com/ceopaludetto/diacritic/commit/bf25582e5901084d058de28bf09559815365bd6a) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Add rspack support
+
+- Updated dependencies [[`bf25582`](https://github.com/ceopaludetto/diacritic/commit/bf25582e5901084d058de28bf09559815365bd6a)]:
+  - @diacritic/utilities@0.0.12
+
 ## 0.0.11
 
 ### Patch Changes
