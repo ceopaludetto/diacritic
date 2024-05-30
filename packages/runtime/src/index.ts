@@ -10,46 +10,6 @@ export type Namespace = Registry["namespaces"][number];
 
 function emptyFn() {}
 
-function createProxy(language: Language, modules: Record<Language, Record<Namespace, any>>) {
-	const proxy: Proxy = new DeepProxy({}, ({ trapName, path, args, DEFAULT, PROXY }) => {
-		if (trapName === "set") throw new TypeError("Cannot set properties on a Diacritic proxy object");
-
-		if (trapName === "get") {
-			if (path.length === 0 && !modules[language]) console.warn(`[Diacritic] language ${language} is not loaded`);
-
-			const [namespace] = path;
-			if (namespace && !modules[language]?.[namespace as Namespace])
-				console.warn(`[Diacritic] namespace ${namespace} is not loaded in language ${language}`);
-
-			return PROXY(emptyFn);
-		}
-
-		if (trapName === "apply") {
-			const [namespace, ...rest] = path;
-
-			if (!namespace) throw new Error("Namespace is not specified");
-
-			if (!modules[language])
-				throw new Error(`Language ${language} is not loaded`);
-
-			if (!modules[language]![namespace as Language])
-				throw new Error(`Namespace ${namespace} is not loaded`);
-
-			const name = toCamelCase(rest.join("-"));
-			const fn: any = modules[language]![namespace as Namespace][name];
-
-			if (typeof fn !== "function")
-				throw new Error(`Function ${name} is not defined in namespace ${namespace}`);
-
-			return fn(proxy, ...args);
-		}
-
-		return DEFAULT;
-	});
-
-	return proxy;
-}
-
 /**
  * The Diacritic class is used to manage the translations and the current language.
  * It also provides a method to change the language and a method to listen to language changes.
@@ -76,8 +36,6 @@ export class Diacritic {
 		this.#current = initialLanguage;
 	}
 
-	public t!: Proxy;
-
 	public get language(): Language {
 		return this.#current;
 	};
@@ -85,8 +43,6 @@ export class Diacritic {
 	public setLanguage = (language: Language) => {
 		this.#current = language;
 		this.#listeners.forEach(listener => listener(language));
-
-		this.t = createProxy(this.#current, this.#modules);
 	};
 
 	public onChange = (listener: (language: Language) => void) => {
@@ -104,9 +60,7 @@ export class Diacritic {
 		}
 
 		if (promises.length === 0) return;
-
 		await Promise.all(promises);
-		this.t = createProxy(this.#current, this.#modules);
 	};
 
 	public needToLoadModules = (languages: Language[], namespaces: Namespace[]) => {
@@ -127,6 +81,43 @@ export class Diacritic {
 		if (!this.#modules[language]) this.#modules[language] = {} as any;
 		this.#modules[language]![namespace] = module;
 	}
+
+	public t: Proxy = new DeepProxy({}, ({ trapName, path, args, DEFAULT, PROXY }) => {
+		if (trapName === "set") throw new TypeError("Cannot set properties on a Diacritic proxy object");
+
+		if (trapName === "get") {
+			if (path.length === 0 && !this.#modules[this.#current])
+				console.warn(`[Diacritic] language ${this.#current} is not loaded`);
+
+			const [namespace] = path;
+			if (namespace && !this.#modules[this.#current]?.[namespace as Namespace])
+				console.warn(`[Diacritic] namespace ${namespace} is not loaded in language ${this.#current}`);
+
+			return PROXY(emptyFn);
+		}
+
+		if (trapName === "apply") {
+			const [namespace, ...rest] = path;
+
+			if (!namespace) throw new Error("Namespace is not specified");
+
+			if (!this.#modules[this.#current])
+				throw new Error(`Language ${this.#current} is not loaded`);
+
+			if (!this.#modules[this.#current]![namespace as Language])
+				throw new Error(`Namespace ${namespace} is not loaded`);
+
+			const name = toCamelCase(rest.join("-"));
+			const fn: any = this.#modules[this.#current]![namespace as Namespace][name];
+
+			if (typeof fn !== "function")
+				throw new Error(`Function ${name} is not defined in namespace ${namespace}`);
+
+			return fn(this.t, ...args);
+		}
+
+		return DEFAULT;
+	});
 }
 
 export type { Proxy };
