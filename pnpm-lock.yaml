@@ -196,9 +196,9 @@ importers:
       '@diacritic/utilities':
         specifier: workspace:*
         version: link:../utilities
-      proxy-deep:
-        specifier: ^4.0.1
-        version: 4.0.1
+      '@qiwi/deep-proxy':
+        specifier: ^3.0.0
+        version: 3.0.0
       tiny-invariant:
         specifier: ^1.3.3
         version: 1.3.3
@@ -949,6 +949,9 @@ packages:
   '@pnpm/npm-conf@2.2.2':
     resolution: {integrity: sha512-UA91GwWPhFExt3IizW6bOeY/pQ0BkuNwKjk9iQW9KqxluGCrg4VenZ0/L+2Y0+ZOtme72EVvg6v0zo3AMQRCeA==}
     engines: {node: '>=12'}
+
+  '@qiwi/deep-proxy@3.0.0':
+    resolution: {integrity: sha512-tbYPnqLecV6PrKBVUKxEtINyLp2F6mD7BPUrz61s8NUJ43PDqpyv+qnm4WbpDovQYHvVjiN94mkuHjSvxfoVuA==}
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     resolution: {integrity: sha512-Tya6xypR10giZV1XzxmH5wr25VcZSncG0pZIjfePT0OVBvqNEurzValetGNarVrGiq66EBVAFn15iYX4w6FKgQ==}
@@ -3290,9 +3293,6 @@ packages:
   proto-list@1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
 
-  proxy-deep@4.0.1:
-    resolution: {integrity: sha512-7Ojq0fbemOGGpRBbExicriLljomgJ32t9jL8HV+FvpqU/UYzowLKVhJyRYcCMBeAGCz++rK2maNzuZYbqjAVPw==}
-
   pseudomap@1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
 
@@ -5013,6 +5013,8 @@ snapshots:
       '@pnpm/config.env-replace': 1.1.0
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
+
+  '@qiwi/deep-proxy@3.0.0': {}
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     optional: true
@@ -7652,8 +7654,6 @@ snapshots:
       react-is: 18.3.1
 
   proto-list@1.2.4: {}
-
-  proxy-deep@4.0.1: {}
 
   pseudomap@1.0.2: {}
 
