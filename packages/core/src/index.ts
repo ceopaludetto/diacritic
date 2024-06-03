@@ -21,6 +21,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 	generation,
 	languages,
 	parser,
+	reactNative,
 	resources,
 }, meta) => {
 	const resourceGraph = new ResourceGraph(languages, resources);
@@ -53,7 +54,9 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			if (isTranslationPath(id)) return normalizeTranslationPath(id) + ".ts";
 			return null;
 		},
-		loadInclude: id => isTranslationPath(id),
+		loadInclude: (id) => {
+			return isTranslationPath(id);
+		},
 		load: (id) => {
 			// Keep track of processed ids to use below
 			processedIDs.add(id);
@@ -67,7 +70,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			// import { defaultLanguage, languages } from "virtual:translations/registry";
 			// ```
 			if (extract.mode === "registry")
-				return { code: createRegistry(defaultLanguage, languages, resourceGraph.allNamespaces()) };
+				return { code: createRegistry(defaultLanguage, languages, resourceGraph.allNamespaces(), reactNative) };
 
 			// In the language only mode, we want to export all namespaces from that language.
 			// Example:
