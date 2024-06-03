@@ -1,5 +1,14 @@
 # @diacritic/runtime
 
+## 0.0.13
+
+### Patch Changes
+
+- [#31](https://github.com/ceopaludetto/diacritic/pull/31) [`03b5d4c`](https://github.com/ceopaludetto/diacritic/commit/03b5d4ca8ac0647e06426bf6513e7144d31ca546) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Add support to metro
+
+- Updated dependencies [[`03b5d4c`](https://github.com/ceopaludetto/diacritic/commit/03b5d4ca8ac0647e06426bf6513e7144d31ca546)]:
+  - @diacritic/utilities@0.0.13
+
 ## 0.0.12
 
 ### Patch Changes
