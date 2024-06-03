@@ -39,6 +39,11 @@ export type DiacriticOptions = {
 	parser: Parser;
 
 	/**
+	 * If project is a react-native project
+	 */
+	reactNative?: boolean;
+
+	/**
 	 * Glob containing all resources (translation files).
 	 * You may also want to specify `language` replacers
 	 *

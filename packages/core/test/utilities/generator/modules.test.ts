@@ -28,4 +28,8 @@ describe("createRegistry", () => {
 	it("should create a registry correctly", () => {
 		expect(createRegistry("en", ["en", "pt"], ["common", "zod"])).toMatchSnapshot();
 	});
+
+	it("should create a registry for react-native correctly", () => {
+		expect(createRegistry("en", ["en", "pt"], ["common", "zod"], true)).toMatchSnapshot();
+	});
 });

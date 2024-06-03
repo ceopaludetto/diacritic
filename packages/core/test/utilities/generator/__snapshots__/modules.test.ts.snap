@@ -15,12 +15,33 @@ export const namespaces = ["common","zod"] as const;
 
 const modules = {
 	en: {
-			common: async () => import("~translations/en/common"),
-			zod: async () => import("~translations/en/zod"),
+			common: async () => import("/~translations/en/common"),
+			zod: async () => import("/~translations/en/zod"),
 	},
 	pt: {
-			common: async () => import("~translations/pt/common"),
-			zod: async () => import("~translations/pt/zod"),
+			common: async () => import("/~translations/pt/common"),
+			zod: async () => import("/~translations/pt/zod"),
+	},
+}
+
+export async function importTranslationModule(language: string, namespace: string) {
+	return modules[language][namespace]();
+}"
+`;
+
+exports[`createRegistry > should create a registry for react-native correctly 1`] = `
+"export const defaultLanguage = "en" as const;
+export const languages = ["en","pt"] as const;
+export const namespaces = ["common","zod"] as const;
+
+const modules = {
+	en: {
+			common: () => require("/~translations/en/common"),
+			zod: () => require("/~translations/en/zod"),
+	},
+	pt: {
+			common: () => require("/~translations/pt/common"),
+			zod: () => require("/~translations/pt/zod"),
 	},
 }
 

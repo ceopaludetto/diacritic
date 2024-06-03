@@ -20,7 +20,14 @@ export function createExportFromLanguageAndNamespace(language: string, namespace
 	return `export * as ${namespace} from "${prefixes[0]}${language}/${namespace}";`;
 }
 
-export function createRegistry(defaultLanguage: string, languages: string[], namespaces: string[]) {
+export function createRegistry(
+	defaultLanguage: string,
+	languages: string[],
+	namespaces: string[],
+	reactNative = false,
+) {
+	const importType = reactNative ? "() => require" : "async () => import";
+
 	return [
 		`export const defaultLanguage = ${JSON.stringify(defaultLanguage)} as const;`,
 		`export const languages = ${JSON.stringify(languages)} as const;`,
@@ -30,7 +37,7 @@ export function createRegistry(defaultLanguage: string, languages: string[], nam
 		languages.flatMap(language => [
 			`\t${language}: {`,
 			namespaces
-				.map(namespace => `\t\t\t${namespace}: async () => import("${prefixes[1]}${language}/${namespace}"),`)
+				.map(namespace => `\t\t\t${namespace}: ${importType}("${prefixes[0]}${language}/${namespace}"),`)
 				.join(EOL),
 			`\t},`,
 		]).join(EOL),

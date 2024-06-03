@@ -45,6 +45,16 @@
 				"default": "./dist/farm.cjs"
 			}
 		},
+		"./metro": {
+			"import": {
+				"types": "./dist/metro.d.ts",
+				"default": "./dist/metro.js"
+			},
+			"require": {
+				"types": "./dist/metro.d.cts",
+				"default": "./dist/metro.cjs"
+			}
+		},
 		"./rollup": {
 			"import": {
 				"types": "./dist/rollup.d.ts",
@@ -96,6 +106,18 @@
 		"build": "tsup --silent",
 		"lint": "eslint src"
 	},
+	"peerDependencies": {
+		"metro-transform-worker": "^0.80.0",
+		"vite": "^5.0.0"
+	},
+	"peerDependenciesMeta": {
+		"metro-transform-worker": {
+			"optional": true
+		},
+		"vite": {
+			"optional": true
+		}
+	},
 	"dependencies": {
 		"@diacritic/utilities": "workspace:*",
 		"dset": "^3.1.3",
@@ -104,6 +126,9 @@
 		"unplugin": "^1.10.1"
 	},
 	"devDependencies": {
+		"@chialab/esbuild-plugin-meta-url": "^0.18.2",
+		"metro-config": "^0.80.9",
+		"metro-transform-worker": "^0.80.9",
 		"vite": "^5.2.11"
 	}
 }
