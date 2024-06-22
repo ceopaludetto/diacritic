@@ -1,7 +1,7 @@
 {
 	"name": "@diacritic/detector",
 	"type": "module",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"author": {
 		"name": "Carlos Eduardo de Oliveira Paludetto",
 		"email": "ceo.paludetto@gmail.com",

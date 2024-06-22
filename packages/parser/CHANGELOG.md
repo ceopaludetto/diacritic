@@ -1,5 +1,15 @@
 # @diacritic/parser
 
+## 0.0.14
+
+### Patch Changes
+
+- [#33](https://github.com/ceopaludetto/diacritic/pull/33) [`29568d1`](https://github.com/ceopaludetto/diacritic/commit/29568d19e21be3c70a7e6a4a93f16a5253c634f2) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Remove metro and add standalone mode
+
+- Updated dependencies [[`29568d1`](https://github.com/ceopaludetto/diacritic/commit/29568d19e21be3c70a7e6a4a93f16a5253c634f2)]:
+  - @diacritic/core@0.0.14
+  - @diacritic/utilities@0.0.14
+
 ## 0.0.13
 
 ### Patch Changes
