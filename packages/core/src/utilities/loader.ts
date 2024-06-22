@@ -1,3 +1,7 @@
+import { existsSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
+
 import invariant from "tiny-invariant";
 
 export const prefixes = ["/~translations/", "~translations/", "virtual:translations/",	"virtual/translations/"];
@@ -41,4 +45,11 @@ export function isResource(file: string, resources: string[]) {
 	}
 
 	return false;
+}
+
+export async function createFolderAndFile(path: string, content: string) {
+	const folder = dirname(path);
+	if (!existsSync(folder)) await mkdir(folder, { recursive: true });
+
+	await writeFile(path, content, "utf-8");
 }
