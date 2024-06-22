@@ -15,40 +15,35 @@ import {
 	resourceWithoutPrefix,
 } from "./utilities/loader";
 import { ResourceGraph } from "./utilities/resource";
+import { watchResources } from "./utilities/watcher";
 
 export const diacritic = createUnplugin<DiacriticOptions>(({
 	defaultLanguage,
 	generation,
 	languages,
 	parser,
-	reactNative,
 	resources,
 }, meta) => {
 	const resourceGraph = new ResourceGraph(languages, resources);
 	const processedIDs = new Set<string>();
 
-	let ran = false;
+	let unsubscribe!: () => Promise<void[]>;
 
 	return {
 		name: "diacritic",
 		enforce: "pre",
-		buildStart() {
+		async buildStart() {
 			if (meta.framework !== "esbuild")
 				for (const file of resourceGraph.allFiles()) this.addWatchFile(file);
 
-			if (meta.framework !== "esbuild" || !ran) {
-				generateTypes({ defaultLanguage, generation, languages, parser, resourceGraph });
-
-				ran = true;
-			}
+			unsubscribe = await watchResources({
+				resourceGraph,
+				resources,
+				onChange: async () => generateTypes({ defaultLanguage, generation, languages, parser, resourceGraph }),
+			});
 		},
-		watchChange: (id, change) => {
-			if (!isResource(id, resources)) return;
-
-			if (change.event === "create") resourceGraph.addFile(id, resources);
-			if (change.event === "delete") resourceGraph.removeFile(id, resources);
-
-			generateTypes({ defaultLanguage, generation, languages, parser, resourceGraph });
+		async buildEnd() {
+			await unsubscribe();
 		},
 		resolveId: (id) => {
 			if (isTranslationPath(id)) return normalizeTranslationPath(id) + ".ts";
@@ -70,7 +65,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			// import { defaultLanguage, languages } from "virtual:translations/registry";
 			// ```
 			if (extract.mode === "registry")
-				return { code: createRegistry(defaultLanguage, languages, resourceGraph.allNamespaces(), reactNative) };
+				return { code: createRegistry(defaultLanguage, languages, resourceGraph.allNamespaces()) };
 
 			// In the language only mode, we want to export all namespaces from that language.
 			// Example:

@@ -29,7 +29,7 @@ describe("createRegistry", () => {
 		expect(createRegistry("en", ["en", "pt"], ["common", "zod"])).toMatchSnapshot();
 	});
 
-	it("should create a registry for react-native correctly", () => {
-		expect(createRegistry("en", ["en", "pt"], ["common", "zod"], true)).toMatchSnapshot();
+	it("should create a registry with custom prefix correctly correctly", () => {
+		expect(createRegistry("en", ["en", "pt"], ["common", "zod"], "./")).toMatchSnapshot();
 	});
 });

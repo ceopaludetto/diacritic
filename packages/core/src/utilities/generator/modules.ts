@@ -4,6 +4,10 @@ import { EOL } from "node:os";
 
 import { prefixes } from "../loader";
 
+function toUnion(arr: string[]) {
+	return arr.map(item => `"${item}"`).join(" | ");
+}
+
 export function createFunctionFromEntry(entry: Entry) {
 	const r = Array.isArray(entry.return)
 		? "[" + entry.return.map(item => `\`${item}\``).join(", ") + "]"
@@ -24,26 +28,27 @@ export function createRegistry(
 	defaultLanguage: string,
 	languages: string[],
 	namespaces: string[],
-	reactNative = false,
+	prefix = prefixes[0],
 ) {
-	const importType = reactNative ? "() => require" : "async () => import";
-
 	return [
-		`export const defaultLanguage = ${JSON.stringify(defaultLanguage)} as const;`,
-		`export const languages = ${JSON.stringify(languages)} as const;`,
-		`export const namespaces = ${JSON.stringify(namespaces)} as const;`,
+		`export const defaultLanguage: ${JSON.stringify(defaultLanguage)} = ${JSON.stringify(defaultLanguage)};`,
+		`export const languages: (${toUnion(languages)})[] = ${JSON.stringify(languages)};`,
+		`export const namespaces: (${toUnion(namespaces)})[] = ${JSON.stringify(namespaces)};`,
 		"",
 		`const modules = {`,
 		languages.flatMap(language => [
 			`\t${language}: {`,
 			namespaces
-				.map(namespace => `\t\t\t${namespace}: ${importType}("${prefixes[0]}${language}/${namespace}"),`)
+				.map(namespace => `\t\t${namespace}: async () => import("${prefix}${language}/${namespace}"),`)
 				.join(EOL),
 			`\t},`,
 		]).join(EOL),
-		`}`,
+		`} as const;`,
 		"",
-		`export async function importTranslationModule(language: string, namespace: string) {`,
+		`export async function importTranslationModule(`,
+		`\tlanguage: (typeof languages)[number],`,
+		`\tnamespace: (typeof namespaces)[number]`,
+		`) {`,
 		`\treturn modules[language][namespace]();`,
 		`}`,
 	].join(EOL);

@@ -1,4 +1,4 @@
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 
 import { toCamelCase } from "@diacritic/utilities";
 import { globSync } from "glob";
@@ -44,6 +44,12 @@ export class ResourceGraph {
 		return [...new Set(Object.values(this.graph).flatMap(value => Object.keys(value)).flat())];
 	}
 
+	public allFolders() {
+		return [
+			...new Set(Object.values(this.graph).flatMap(value => Object.values(value)).flat().map(file => dirname(file))),
+		];
+	}
+
 	public hasFile(file: string) {
 		return this.allFiles().includes(file);
 	}
@@ -60,6 +66,8 @@ export class ResourceGraph {
 	public removeFile(file: string, resources: string[]) {
 		const { language, namespace } = this.determineLanguageAndNamespaceFromResources(file, resources);
 		this.graph[language]![namespace] = this.graph[language]![namespace]!.filter(f => f !== file);
+
+		if (this.graph[language]![namespace]!.length === 0) delete this.graph[language]![namespace];
 	}
 
 	private determineLanguageAndNamespaceFromResources(file: string, resources: string[]) {

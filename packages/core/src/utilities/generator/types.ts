@@ -1,13 +1,12 @@
 import type { ResourceGraph } from "../resource";
 import type { DiacriticGenerationOptions, Entry, Parser } from "../types";
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import { EOL } from "node:os";
-import { dirname } from "node:path";
 
 import { dset } from "dset";
 
-import { prefixes } from "../loader";
+import { createFolderAndFile, prefixes } from "../loader";
 
 /// keep-sorted
 type GenerateTypesOptions = {
@@ -28,7 +27,7 @@ function functionFromEntry(entry: Entry) {
 	return `(${args}) => ${Array.isArray(entry.return) ? "string[]" : "string"}`;
 }
 
-export function generateTypes({
+export async function generateTypes({
 	defaultLanguage,
 	generation,
 	languages,
@@ -38,7 +37,7 @@ export function generateTypes({
 	const entries = resourceGraph.allEntriesForLanguage(defaultLanguage);
 	const namespaces = resourceGraph.allNamespaces();
 
-	const declarations: string[] = generation?.banner ?? [];
+	const declarations: string[] = [...(generation?.banner ?? [])];
 
 	declarations.push(
 		`declare module "${prefixes[1]}registry" {`,
@@ -60,10 +59,12 @@ export function generateTypes({
 	);
 
 	for (const [namespace, files] of Object.entries(entries)) {
-		const contents = files.map(file => readFileSync(file, "utf-8")).flatMap(parser.convertFile);
+		const contents = await Promise.all(files.map(file => readFile(file, "utf-8")));
+		const entries = contents.flatMap(parser.convertFile);
+
 		const structure = {};
 
-		for (const entry of contents) dset(structure, entry.path, functionFromEntry(entry));
+		for (const entry of entries) dset(structure, entry.path, functionFromEntry(entry));
 
 		declarations.push(
 			`\t\t${namespace}: ${JSON.stringify(structure).replace(/"/g, "")};`,
@@ -78,8 +79,5 @@ export function generateTypes({
 		`}`,
 	);
 
-	const folder = dirname(generation.outFile);
-	if (!existsSync(folder)) mkdirSync(folder, { recursive: true });
-
-	writeFileSync(generation.outFile, declarations.join(EOL), "utf-8");
+	await createFolderAndFile(generation.outFile, declarations.join(EOL));
 }
