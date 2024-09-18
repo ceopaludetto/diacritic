@@ -1,5 +1,14 @@
 # @diacritic/runtime
 
+## 0.0.15
+
+### Patch Changes
+
+- [#35](https://github.com/ceopaludetto/diacritic/pull/35) [`9539a9d`](https://github.com/ceopaludetto/diacritic/commit/9539a9d32725fe1e206dc6c377bf7b68bad227c0) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Externalize @qiwi/deep-proxy in runtime to fix RN integration
+
+- Updated dependencies [[`9539a9d`](https://github.com/ceopaludetto/diacritic/commit/9539a9d32725fe1e206dc6c377bf7b68bad227c0)]:
+  - @diacritic/utilities@0.0.15
+
 ## 0.0.14
 
 ### Patch Changes
