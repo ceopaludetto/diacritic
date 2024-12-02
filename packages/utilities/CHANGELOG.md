@@ -1,5 +1,11 @@
 # @diacritic/utilities
 
+## 0.0.17
+
+### Patch Changes
+
+- [#40](https://github.com/ceopaludetto/diacritic/pull/40) [`48630f4`](https://github.com/ceopaludetto/diacritic/commit/48630f4c0890b11baa8ef918575d5ed519a4b2f1) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Fix publishConfig access in package.json
+
 ## 0.0.16
 
 ### Patch Changes
