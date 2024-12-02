@@ -1,7 +1,7 @@
 {
 	"name": "@diacritic/cli",
 	"type": "module",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"author": {
 		"name": "Carlos Eduardo de Oliveira Paludetto",
 		"email": "ceo.paludetto@gmail.com",
