@@ -4,80 +4,79 @@ import { toCamelCase } from "@diacritic/utilities";
 import { globSync } from "glob";
 
 export class ResourceGraph {
-	private graph: Record<string, Record<string, string[]>> = {};
+	#graph: Record<string, Record<string, string>> = {};
 
-	public constructor(languages: string[], resources: string[]) {
-		for (const language of languages) {
-			for (const resource of resources) {
-				const pattern = resolve(resource).replaceAll("{{language}}", language);
-				const files = globSync(pattern);
-
-				const regex = new RegExp(pattern.replace("*", "(.*)"));
-				for (const file of files) {
-					const namespace = toCamelCase(file.match(regex)![1]!);
-
-					if (!this.graph[language]) this.graph[language] = {};
-					if (!this.graph[language]![namespace]) this.graph[language]![namespace] = [];
-					this.graph[language]![namespace]!.push(file);
-				}
-			}
-		}
-	}
-
-	public allFiles() {
-		return Object.values(this.graph).flatMap(value => Object.values(value)).flat();
-	}
-
-	public allEntries() {
-		return this.graph;
-	}
-
-	public allEntriesForLanguage(language: string) {
-		return this.graph[language] ?? {};
-	}
-
-	public allEntriesForLanguageAndNamespace(language: string, namespace: string) {
-		return this.graph[language]?.[namespace] ?? [];
-	}
-
-	public allNamespaces() {
-		return [...new Set(Object.values(this.graph).flatMap(value => Object.keys(value)).flat())];
-	}
-
-	public allFolders() {
-		return [
-			...new Set(Object.values(this.graph).flatMap(value => Object.values(value)).flat().map(file => dirname(file))),
-		];
-	}
-
-	public hasFile(file: string) {
-		return this.allFiles().includes(file);
-	}
-
-	public addFile(file: string, resources: string[]) {
-		const { language, namespace } = this.determineLanguageAndNamespaceFromResources(file, resources);
-
-		if (!this.graph[language]) this.graph[language] = {};
-		if (!this.graph[language]![namespace]) this.graph[language]![namespace] = [];
-
-		this.graph[language]![namespace]!.push(file);
-	}
-
-	public removeFile(file: string, resources: string[]) {
-		const { language, namespace } = this.determineLanguageAndNamespaceFromResources(file, resources);
-		this.graph[language]![namespace] = this.graph[language]![namespace]!.filter(f => f !== file);
-
-		if (this.graph[language]![namespace]!.length === 0) delete this.graph[language]![namespace];
-	}
-
-	private determineLanguageAndNamespaceFromResources(file: string, resources: string[]) {
+	#determineLanguageAndNamespaceFromResources(file: string, resources: string[]) {
 		for (const resource of resources) {
-			const regex = new RegExp(resource.replaceAll("*", "(.*)").replace("{{language}}", "(.*)"));
+			const pattern = resource.replaceAll("{{namespace}}", "(.*)").replaceAll("{{language}}", "(.*)");
+
+			const regex = new RegExp(pattern);
 			const match = file.match(regex);
 
 			if (match) return { language: match[1]!, namespace: toCamelCase(match[2]!) };
 		}
 
-		throw new Error(`Could not determine language and namespace from file: ${file}`);
+		throw new Error(`Could not determine language and namespace from file ${file}`);
+	}
+
+	public constructor(languages: string[], resources: string[]) {
+		for (const language of languages) {
+			for (const resource of resources) {
+				const pattern = resolve(resource)
+					.replaceAll("{{language}}", language)
+					.replaceAll("{{namespace}}", "*");
+
+				for (const file of globSync(pattern)) {
+					this.addFile(file, resources);
+				}
+			}
+		}
+	}
+
+	public get files() {
+		return Object.values(this.#graph).flatMap(value => Object.values(value));
+	}
+
+	public get entries() {
+		return this.#graph;
+	}
+
+	public get namespaces() {
+		return [...new Set(Object.values(this.#graph).flatMap(value => Object.keys(value)))];
+	}
+
+	public get folders() {
+		return [
+			...new Set(Object.values(this.#graph).flatMap(value => Object.values(value)).map(file => dirname(file))),
+		];
+	}
+
+	public entriesForLanguage(language: string) {
+		return this.#graph[language] ?? {};
+	}
+
+	public entryForLanguageAndNamespace(language: string, namespace: string) {
+		return this.#graph[language]?.[namespace];
+	}
+
+	public hasFile(file: string) {
+		return this.files.includes(file);
+	}
+
+	public addFile(file: string, resources: string[]) {
+		const { language, namespace } = this.#determineLanguageAndNamespaceFromResources(file, resources);
+
+		this.#graph[language] ??= {};
+
+		if (this.#graph[language][namespace])
+			throw new Error(`Duplicate namespace ${namespace} for language ${language} found`);
+
+		this.#graph[language][namespace] = file;
+	}
+
+	public removeFile(file: string, resources: string[]) {
+		const { language, namespace } = this.#determineLanguageAndNamespaceFromResources(file, resources);
+
+		delete this.#graph[language]![namespace];
 	}
 }

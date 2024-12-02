@@ -38,15 +38,6 @@ export function resourceWithoutPrefix(path: string) {
 	return path.replace(prefixes[0]!, "");
 }
 
-export function isResource(file: string, resources: string[]) {
-	for (const resource of resources) {
-		const regex = new RegExp(resource.replace("{{language}}", "([^/]+)").replaceAll("*", "([^/]+)"));
-		if (regex.test(file)) return true;
-	}
-
-	return false;
-}
-
 export async function createFolderAndFile(path: string, content: string) {
 	const folder = dirname(path);
 	if (!existsSync(folder)) await mkdir(folder, { recursive: true });

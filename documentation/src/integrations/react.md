@@ -32,7 +32,7 @@ To use the Diacritic React integration, you will need to import the `DiacriticPr
 
 ```tsx twoslash
 // @jsx: react-jsx
-// @module: preserve
+// @moduleResolution: bundler
 // @filename: index.tsx
 // ---cut-before---
 import { detect } from "@diacritic/detector";

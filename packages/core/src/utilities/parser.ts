@@ -10,11 +10,12 @@ export function functionName(parent: string[], key: string) {
 	}, "");
 }
 
-// Match {name:type} or {name: type} or { name: type }
-const argumentRegex = /\{\s*(\w+)\s*:\s*(\w+)\s*\}/g;
+// Match {{name:type}} or {{name: type}} or {{ name: type }}
+const argumentRegex = /\{\{\s*(\w+)\s*:\s*(\w+)\s*\}\}/g;
 
-// Match $t.some.deep.random.name({name:type})
-const expansionRegex = /\$t\.(\w+(?:\.\w+)*)(\(\s*(?:(\{[^{}:]*:[^{}]*\}(?:\s*,\s*\{[^{}:]*:[^{}]*\})*)+\s*)?\))/g;
+// Match $t.some.deep.random.name({{name:type}})
+// eslint-disable-next-line style/max-len
+const expansionRegex = /\$t\.(\w+(?:\.\w+)*)(\(\s*(?:(\{\{[^{}:]*:[^{}]*\}\}(?:\s*,\s*\{\{[^{}:]*:[^{}]*\}\})*)+\s*)?\))/g;
 
 export function extractArgumentsFromString(value: string): Entry["args"] {
 	const matches = value.matchAll(argumentRegex);

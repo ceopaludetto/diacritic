@@ -3,7 +3,7 @@
 		"switch": "Alterar língua"
 	},
 	"hello": "Olá mundo!",
-	"interpolation": "Valor {value:number}",
+	"interpolation": "Valor {{ value: number }}",
 	"arr": ["alguma", "string"],
 	"expansion": "Expansão $t.common.hello()"
 }

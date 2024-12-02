@@ -12,13 +12,13 @@
 	"dependencies": {
 		"@diacritic/core": "workspace:*",
 		"@diacritic/detector": "workspace:*",
-		"@diacritic/parser": "workspace:*",
 		"@diacritic/react": "workspace:*",
 		"@diacritic/runtime": "workspace:*",
-		"vitepress": "^1.2.2"
+		"@shikijs/vitepress-twoslash": "^1.24.0",
+		"vitepress": "^1.5.0"
 	},
 	"devDependencies": {
-		"@types/react": "^18.3.2",
-		"@types/react-dom": "^18.2.22"
+		"@types/react": "^18.3.12",
+		"@types/react-dom": "^18.3.1"
 	}
 }

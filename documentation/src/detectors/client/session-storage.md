@@ -31,7 +31,7 @@ $ yarn add @diacritic/detector
 To use the session storage detector, import the `sessionStorageDetector` function from the package and call it with the HTML content of the webpage. The function returns the detected language of the content.
 
 ```ts twoslash
-// @module: preserve
+// @moduleResolution: bundler
 import { detect } from "@diacritic/detector";
 import { sessionStorageDetector } from "@diacritic/detector/client";
 import * as registry from "virtual:translations/registry";

@@ -26,24 +26,24 @@ It aims to be highly configurable through different parsers and bundlers, allowi
 
 ### Packages
 
-To install Diacritic, you will need to add the `@diacritic/core` and a parser package to your project:
+To install Diacritic, you will need to add the `@diacritic/core` to your project:
 
 ::: code-group
 
 ```sh [NPM]
-$ npm add -D @diacritic/core @diacritic/parser
+$ npm add -D @diacritic/core
 ```
 
 ```sh [PNPM]
-$ pnpm add -D @diacritic/core @diacritic/parser
+$ pnpm add -D @diacritic/core
 ```
 
 ```sh [Bun]
-$ bun add -D @diacritic/core @diacritic/parser
+$ bun add -D @diacritic/core
 ```
 
 ```sh [Yarn]
-$ yarn add -D @diacritic/core @diacritic/parser
+$ yarn add -D @diacritic/core
 ```
 
 :::
@@ -54,10 +54,9 @@ The setup of Diacritic depends on the bundler you are using:
 
 ::: code-group
 
-```js [Esbuild] {2-3,8-14}
+```js [Esbuild]
 // esbuild.config.js
 import diacritic from "@diacritic/core/esbuild";
-import json from "@diacritic/parser/json";
 import { build } from "esbuild";
 
 build({
@@ -65,7 +64,6 @@ build({
 		diacritic({
 			defaultLanguage: "en",
 			languages: ["en", "pt"],
-			parser: json(),
 			resources: ["./src/locales/{{language}}/*.json"],
 			generation: { outFile: "./src/types/translations.d.ts" }
 		})
@@ -73,17 +71,15 @@ build({
 });
 ```
 
-```js [Farm] {2-3,7-13}
+```js [Farm]
 // farm.config.ts
 import diacritic from "@diacritic/core/farm";
-import json from "@diacritic/parser/json";
 
 export default defineConfig({
 	plugins: [
 		diacritic({
 			defaultLanguage: "en",
 			languages: ["en", "pt"],
-			parser: json(),
 			resources: ["./src/locales/{{language}}/*.json"],
 			generation: { outFile: "./src/types/translations.d.ts" }
 		})
@@ -91,17 +87,15 @@ export default defineConfig({
 });
 ```
 
-```js [Rollup] {2-3,7-13}
+```js [Rollup]
 // rollup.config.js
 import diacritic from "@diacritic/core/rollup";
-import json from "@diacritic/parser/json";
 
 export default {
 	plugins: [
 		diacritic({
 			defaultLanguage: "en",
 			languages: ["en", "pt"],
-			parser: json(),
 			resources: ["./src/locales/{{language}}/*.json"],
 			generation: { outFile: "./src/types/translations.d.ts" }
 		})
@@ -109,17 +103,15 @@ export default {
 };
 ```
 
-```ts [Vite] {2-3,7-13}
+```ts [Vite]
 // vite.config.ts
 import diacritic from "@diacritic/core/vite";
-import json from "@diacritic/parser/json";
 
 export default defineConfig({
 	plugins: [
 		diacritic({
 			defaultLanguage: "en",
 			languages: ["en", "pt"],
-			parser: json(),
 			resources: ["./src/locales/{{language}}/*.json"],
 			generation: { outFile: "./src/types/translations.d.ts" }
 		})
@@ -127,14 +119,13 @@ export default defineConfig({
 });
 ```
 
-```js [Webpack] {4-10}
+```js [Webpack]
 // webpack.config.js
 module.exports = {
 	plugins: [
 		require("@diacritic/core/webpack")({
 			defaultLanguage: "en",
 			languages: ["en", "pt"],
-			parser: require("@diacritic/parser/json")(),
 			resources: ["./src/locales/{{language}}/*.json"],
 			generation: { outFile: "./src/types/translations.d.ts" }
 		})
@@ -146,13 +137,13 @@ module.exports = {
 
 ## Usage
 
-To use the generated types and translations, you will need to create translations files in the JSON (other formats are available, check the [parsers](../parsers/) section to learn more) format:
+To use the generated types and translations, you will need to create translations files in the JSON (you can also use YAML) format:
 
 ```json
 // common.json
 {
 	"hello": "Hello world!",
-	"nameAndAge": "My name is {name:string} and I'm {age:number} years old.",
+	"nameAndAge": "My name is {{ name: string }} and I'm {{ age: number }} years old.",
 	"deep": { "keys": { "also": { "work": "!" } } }
 }
 ```
@@ -160,6 +151,7 @@ To use the generated types and translations, you will need to create translation
 Now you can use the generated translations in your code, but first you need to create a diacrictic instance:
 
 ```ts twoslash
+// @moduleResolution: bundler
 // @filename: index.ts
 // ---cut-before---
 import { Diacritic } from "@diacritic/runtime";
@@ -209,7 +201,7 @@ declare module "~translations/registry" {
 }
 
 declare module "virtual:translations/registry" {
-	export * from "~translations/registry";
+	export * from "~translations/proxy";
 }
 
 declare module "~translations/proxy" {
@@ -223,7 +215,7 @@ declare module "~translations/proxy" {
 }
 
 declare module "virtual:translations/proxy" {
-	export * from "~translations/proxy";
+	export * from "~translations/registry";
 }
 ```
 
@@ -232,5 +224,3 @@ declare module "virtual:translations/proxy" {
 Now you may want to learn how to detect the language of the user or how to change the language of your application. Check the [detectors](../detectors/) section to learn more about it.
 
 You may also want to learn how to use the translations in your frontend framework. Check the [integrations](../integrations/) section to learn more about it.
-
-And if you like to use different kinds of translation files, check the [parsers](../parsers/) section to learn more about it.

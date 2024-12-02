@@ -6,10 +6,10 @@ import { EOL } from "node:os";
 import invariant from "tiny-invariant";
 import { createUnplugin } from "unplugin";
 
+import { convertBasedOnFileExtension } from "./parsers";
 import { createExportFromLanguageAndNamespace, createFunctionFromEntry, createRegistry, generateTypes } from "./utilities/generator";
 import {
 	extractLanguageAndNamespace,
-	isResource,
 	isTranslationPath,
 	normalizeTranslationPath,
 	resourceWithoutPrefix,
@@ -21,7 +21,6 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 	defaultLanguage,
 	generation,
 	languages,
-	parser,
 	resources,
 }, meta) => {
 	const resourceGraph = new ResourceGraph(languages, resources);
@@ -33,17 +32,18 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 		name: "diacritic",
 		enforce: "pre",
 		async buildStart() {
-			if (meta.framework !== "esbuild")
-				for (const file of resourceGraph.allFiles()) this.addWatchFile(file);
+			if (meta.framework !== "esbuild") {
+				for (const file of resourceGraph.files) this.addWatchFile(file);
+			}
 
 			unsubscribe = await watchResources({
 				resourceGraph,
 				resources,
-				onChange: async () => generateTypes({ defaultLanguage, generation, languages, parser, resourceGraph }),
+				onChange: async () => generateTypes({ defaultLanguage, generation, languages, resourceGraph }),
 			});
 		},
 		async buildEnd() {
-			await unsubscribe();
+			await unsubscribe?.();
 		},
 		resolveId: (id) => {
 			if (isTranslationPath(id)) return normalizeTranslationPath(id) + ".ts";
@@ -65,7 +65,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			// import { defaultLanguage, languages } from "virtual:translations/registry";
 			// ```
 			if (extract.mode === "registry")
-				return { code: createRegistry(defaultLanguage, languages, resourceGraph.allNamespaces()) };
+				return { code: createRegistry(defaultLanguage, languages, resourceGraph.namespaces) };
 
 			// In the language only mode, we want to export all namespaces from that language.
 			// Example:
@@ -74,7 +74,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			// ```
 			if (extract.mode === "languageOnly") {
 				const { language } = extract;
-				const namespaces = Object.keys(resourceGraph.allEntriesForLanguage(language));
+				const namespaces = Object.keys(resourceGraph.entriesForLanguage(language));
 
 				const exports = namespaces.flatMap(item => createExportFromLanguageAndNamespace(language, item));
 				return { code: exports.join(EOL) };
@@ -88,13 +88,12 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 			if (extract.mode === "languageAndNamespace") {
 				const { language, namespace } = extract;
 
-				const files = resourceGraph.allEntriesForLanguageAndNamespace(language, namespace)
-					.filter(file => existsSync(file))
-					.map(file => readFileSync(file, "utf-8"));
+				const file = resourceGraph.entryForLanguageAndNamespace(language, namespace);
 
-				invariant(files.length > 0, `There's no language resource available [${resource}]`);
+				invariant(!!file && existsSync(file), `There's no language resource available [${resource}]`);
+				const content = readFileSync(file, "utf-8");
 
-				const entries = files.flatMap(item => parser.convertFile(item));
+				const entries = convertBasedOnFileExtension(content, file);
 				const functions = entries.map(item => createFunctionFromEntry(item));
 
 				return { code: functions.join(EOL) };
@@ -103,7 +102,7 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 		vite: {
 			// Manually invalidate virtual module to trigger update on translation file change
 			async handleHotUpdate({ server, file }) {
-				if (!isResource(file, resources))	return;
+				if (!resourceGraph.hasFile(file))	return;
 
 				for (const id of processedIDs) {
 					const module = server.moduleGraph.getModuleById(id);
@@ -118,4 +117,11 @@ export const diacritic = createUnplugin<DiacriticOptions>(({
 	};
 });
 
+export * from "./parsers";
+
+export * from "./utilities/configuration";
+export * from "./utilities/generator";
+export * from "./utilities/loader";
+export * from "./utilities/resource";
 export * from "./utilities/types";
+export * from "./utilities/watcher";
