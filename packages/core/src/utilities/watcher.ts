@@ -13,7 +13,7 @@ export async function watchResources({ resourceGraph, resources, onChange }: Wat
 	await onChange?.();
 
 	const subscriptions: AsyncSubscription[] = [];
-	for (const folder of resourceGraph.allFolders()) {
+	for (const folder of resourceGraph.folders) {
 		const subscription = await subscribe(folder, async (err, events) => {
 			if (err) throw err;
 

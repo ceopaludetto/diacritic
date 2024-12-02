@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { extractLanguageAndNamespace, isResource, isTranslationPath, normalizeTranslationPath, resourceWithoutPrefix } from "~/utilities/loader";
+import { extractLanguageAndNamespace, isTranslationPath, normalizeTranslationPath, resourceWithoutPrefix } from "~/utilities/loader";
 
 describe("isTranslationPath", () => {
 	it("should return true for valid translation paths", () => {
@@ -30,16 +30,6 @@ describe("resourceWithoutPrefix", () => {
 		expect(resourceWithoutPrefix("/~translations/en")).toBe("en");
 		expect(resourceWithoutPrefix("/~translations/common")).toBe("common");
 		expect(resourceWithoutPrefix("/~translations/en/common")).toBe("en/common");
-	});
-});
-
-describe("isResource", () => {
-	it("should return true for valid resources", () => {
-		const resources = ["/absolute/path/{{language}}/*.json"];
-
-		expect(isResource("/absolute/path/en/common.json", resources)).toBe(true);
-		expect(isResource("/absolute/path/src/index.ts", resources)).toBe(false);
-		expect(isResource("/absolute/path/en", resources)).toBe(false);
 	});
 });
 

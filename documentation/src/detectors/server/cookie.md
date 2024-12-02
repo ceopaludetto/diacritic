@@ -31,7 +31,7 @@ $ yarn add @diacritic/detector
 To use the cookie detector, import the `cookieDetector` function from the package and call it with the HTML content of the webpage. The function returns the detected language of the content.
 
 ```ts twoslash
-// @module: preserve
+// @moduleResolution: bundler
 import { detect } from "@diacritic/detector";
 import { cookieDetector } from "@diacritic/detector/server";
 import * as registry from "virtual:translations/registry";

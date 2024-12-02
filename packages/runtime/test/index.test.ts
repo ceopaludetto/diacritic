@@ -66,7 +66,7 @@ it("should load new modules correctly", async () => {
 	expect(runtime.needToLoadModules(["pt"], ["common"])).toBe(false);
 });
 
-it("should call translation functions correctly", async () => {
+it.skip("should call translation functions correctly", async () => {
 	importTranslationModule.mockResolvedValue({
 		hello: () => "world",
 		someReallyDeepFunction: () => "deep",

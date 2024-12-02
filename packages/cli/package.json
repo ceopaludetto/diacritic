@@ -1,7 +1,7 @@
 {
-	"name": "@diacritic/parser",
+	"name": "@diacritic/cli",
 	"type": "module",
-	"version": "0.0.15",
+	"version": "0.0.1",
 	"author": {
 		"name": "Carlos Eduardo de Oliveira Paludetto",
 		"email": "ceo.paludetto@gmail.com",
@@ -11,24 +11,25 @@
 	"repository": {
 		"type": "git",
 		"url": "https://www.github.com/ceopaludetto/diacritic",
-		"directory": "packages/parser"
+		"directory": "packages/cli"
 	},
-	"sideEffects": true,
+	"sideEffects": false,
 	"exports": {
-		"./json": {
-			"import": {
-				"types": "./dist/json.d.ts",
-				"default": "./dist/json.js"
-			},
-			"require": {
-				"types": "./dist/json.d.cts",
-				"default": "./dist/json.cjs"
-			}
+		"import": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"require": {
+			"types": "./dist/index.d.cts",
+			"default": "./dist/index.cjs"
 		}
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"bin": {
+		"diacritic": "./dist/index.cjs"
+	},
 	"files": [
 		"dist"
 	],
@@ -38,8 +39,6 @@
 	},
 	"dependencies": {
 		"@diacritic/core": "workspace:*",
-		"@diacritic/utilities": "workspace:*",
-		"nanoid": "^3.3.7",
-		"tiny-invariant": "^1.3.3"
+		"@drizzle-team/brocli": "^0.11.0"
 	}
 }

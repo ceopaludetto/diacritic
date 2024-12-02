@@ -31,7 +31,7 @@ $ yarn add @diacritic/detector
 To use the hostname detector, import the `hostnameDetector` function from the package and call it with the HTTP request. The function returns the detected language of the server.
 
 ```ts twoslash
-// @module: preserve
+// @moduleResolution: bundler
 import { detect } from "@diacritic/detector";
 import { hostnameDetector } from "@diacritic/detector/server";
 import * as registry from "virtual:translations/registry";

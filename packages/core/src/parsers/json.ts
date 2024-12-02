@@ -1,11 +1,12 @@
-import type { Entry, Parser } from "@diacritic/core";
+import type { Entry } from "~/utilities/types";
 
-import { toCamelCase } from "@diacritic/utilities";
+import { runCatching, toCamelCase } from "@diacritic/utilities";
 
-import { nanoid } from "./utilities/nanoid";
-import { extractArgumentsFromString, functionName, transformReturnFromString } from "./utilities/parser";
+import { extractArgumentsFromString, functionName, transformReturnFromString } from "~/utilities/parser";
 
-function parseContent(content: Record<string, any>, parent: string[] = []): Entry[] {
+function parseContent(content: unknown, parent: string[] = []): Entry[] {
+	if (typeof content !== "object" || content === null) return [];
+
 	return Object.entries(content)
 		.reduce<Entry[]>((acc, [key, value]) => {
 			if (typeof value === "object") {
@@ -15,7 +16,7 @@ function parseContent(content: Record<string, any>, parent: string[] = []): Entr
 					const name = functionName(parent, key);
 					const args = onlyStrings.flatMap(extractArgumentsFromString);
 
-					const proxyName = nanoid();
+					const proxyName = "_root";
 					args.unshift({ name: proxyName, type: "Proxy" });
 
 					const strs = onlyStrings.map(item => transformReturnFromString(proxyName, item));
@@ -31,7 +32,7 @@ function parseContent(content: Record<string, any>, parent: string[] = []): Entr
 				const name = functionName(parent, key);
 				const args = extractArgumentsFromString(value);
 
-				const proxyName = nanoid();
+				const proxyName = "_root";
 				args.unshift({ name: proxyName, type: "Proxy" });
 
 				const str = transformReturnFromString(proxyName, value);
@@ -44,15 +45,9 @@ function parseContent(content: Record<string, any>, parent: string[] = []): Entr
 		}, []);
 }
 
-function convertFile(file: string): Entry[] {
-	try {
-		const content = JSON.parse(file);
-		return parseContent(content);
-	} catch {
-		return [];
-	}
-}
+export function parseJSON(content: string): Entry[] {
+	const res = runCatching(() => JSON.parse(content));
+	if (res.type === "failure") return [];
 
-export default function parserJson(): Parser {
-	return { name: "diacritic-json", interpolation: ["{", "}"], convertFile };
+	return parseContent(res.value);
 }

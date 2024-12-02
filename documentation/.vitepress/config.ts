@@ -55,13 +55,6 @@ export default defineConfig({
 				],
 			},
 			{
-				text: "Parsers",
-				link: "/parsers/",
-				items: [
-					{ text: "JSON", link: "/parsers/json" },
-				],
-			},
-			{
 				text: "Integrations",
 				link: "/integrations/",
 				items: [

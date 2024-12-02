@@ -1,5 +1,4 @@
 import diacritic from "@diacritic/core/vite";
-import json from "@diacritic/parser/json";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 
@@ -9,8 +8,7 @@ export default defineConfig({
 		diacritic({
 			defaultLanguage: "en",
 			languages: ["en", "pt"],
-			parser: json(),
-			resources: ["./src/locales/{{language}}/*.json"],
+			resources: ["./src/locales/{{language}}/{{namespace}}.json"],
 			generation: { outFile: "./src/types/translations.d.ts" },
 		}),
 		react(),

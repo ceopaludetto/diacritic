@@ -1,5 +1,5 @@
 import type { ResourceGraph } from "../resource";
-import type { DiacriticGenerationOptions, Entry, Parser } from "../types";
+import type { DiacriticGenerationOptions, Entry } from "../types";
 
 import { readFile } from "node:fs/promises";
 import { EOL } from "node:os";
@@ -7,13 +7,13 @@ import { EOL } from "node:os";
 import { dset } from "dset";
 
 import { createFolderAndFile, prefixes } from "../loader";
+import { convertBasedOnFileExtension } from "~/parsers";
 
 /// keep-sorted
 type GenerateTypesOptions = {
 	defaultLanguage: string;
 	generation: DiacriticGenerationOptions;
 	languages: string[];
-	parser: Parser;
 	resourceGraph: ResourceGraph;
 };
 
@@ -31,11 +31,10 @@ export async function generateTypes({
 	defaultLanguage,
 	generation,
 	languages,
-	parser,
 	resourceGraph,
 }: GenerateTypesOptions) {
-	const entries = resourceGraph.allEntriesForLanguage(defaultLanguage);
-	const namespaces = resourceGraph.allNamespaces();
+	const entries = resourceGraph.entriesForLanguage(defaultLanguage);
+	const namespaces = resourceGraph.namespaces;
 
 	const declarations: string[] = [...(generation?.banner ?? [])];
 
@@ -58,9 +57,9 @@ export async function generateTypes({
 		`\ttype Proxy = {`,
 	);
 
-	for (const [namespace, files] of Object.entries(entries)) {
-		const contents = await Promise.all(files.map(file => readFile(file, "utf-8")));
-		const entries = contents.flatMap(parser.convertFile);
+	for (const [namespace, file] of Object.entries(entries)) {
+		const contents = await readFile(file, "utf-8");
+		const entries = convertBasedOnFileExtension(contents, file);
 
 		const structure = {};
 

@@ -22,25 +22,6 @@ jobs:
         with:
           token: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.0.5
-          run_install: false
-
-      - name: Get PNPM store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Cache PNPM
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
       - name: Cache Turbo
         uses: actions/cache@v4
         with:
@@ -49,14 +30,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
       - name: Install Dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with:
           commit: "chore: release package(s)"
-          publish: pnpm run release
+          publish: bun run release
         env:
           GITHUB_TOKEN: ${{ secrets.CHANGESETS_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

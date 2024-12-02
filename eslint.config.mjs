@@ -48,30 +48,19 @@ export default eslint(
 			"node/prefer-global/buffer": "off",
 			"node/prefer-global/process": "off",
 
-			"import/order": [
+			"perfectionist/sort-imports": [
 				"warn",
 				{
-					"alphabetize": { order: "asc", caseInsensitive: true },
-					"groups": [
-						"type",
-						"builtin",
-						"external",
-						"index",
-						["internal", "sibling", "parent"],
-						"object",
-					],
-					"pathGroups": [
-						{ pattern: "~/**", group: "internal" },
-					],
-					"pathGroupsExcludedImportTypes": [
-						"builtin",
-						"type",
-						"external",
-						"object",
-					],
-					"newlines-between": "always",
+					type: "alphabetical",
+					order: "asc",
+					ignoreCase: true,
+					groups: ["side-effect", "type", "builtin", "external", "index", ["internal", "sibling", "parent"], "object"],
+					internalPattern: ["^~/.*"],
+					newlinesBetween: "always",
+					environment: "bun",
 				},
 			],
+
 			"import/consistent-type-specifier-style": ["warn", "prefer-top-level"],
 		},
 	},
@@ -90,6 +79,7 @@ export default eslint(
 		files: ["documentation/**/*.md"],
 		rules: {
 			"style/max-len": "off",
+			"perfectionist/sort-imports": "off",
 		},
 	},
 );
