@@ -7,6 +7,9 @@
 		"email": "ceo.paludetto@gmail.com",
 		"url": "https://www.github.com/ceopaludetto"
 	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"license": "MIT",
 	"repository": {
 		"type": "git",
