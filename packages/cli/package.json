@@ -1,7 +1,7 @@
 {
 	"name": "@diacritic/cli",
 	"type": "module",
-	"version": "0.0.1",
+	"version": "0.0.0",
 	"author": {
 		"name": "Carlos Eduardo de Oliveira Paludetto",
 		"email": "ceo.paludetto@gmail.com",
@@ -35,7 +35,8 @@
 	],
 	"scripts": {
 		"build": "tsup --silent",
-		"lint": "eslint src"
+		"lint": "eslint src",
+		"publish": "bun publish"
 	},
 	"dependencies": {
 		"@diacritic/core": "workspace:*",
