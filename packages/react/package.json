@@ -32,7 +32,8 @@
 	],
 	"scripts": {
 		"build": "tsup --silent",
-		"lint": "eslint src"
+		"lint": "eslint src",
+		"publish": "bun publish"
 	},
 	"peerDependencies": {
 		"react": "^18.0.0"

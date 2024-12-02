@@ -22,7 +22,7 @@
 		"build": "turbo build --cache-dir=.turbo",
 		"lint:fix": "turbo lint --cache-dir=.turbo -- --fix && sherif --fix",
 		"lint": "turbo lint --cache-dir=.turbo && sherif",
-		"release": "bun run build && bun changeset publish",
+		"release": "bun run build && turbo publish --cache-dir=.turbo",
 		"test:update": "vitest run --update",
 		"test": "vitest run"
 	},
