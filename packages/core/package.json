@@ -97,8 +97,7 @@
 	],
 	"scripts": {
 		"build": "tsup --silent",
-		"lint": "eslint src",
-		"publish": "bun publish"
+		"lint": "eslint src"
 	},
 	"peerDependencies": {
 		"vite": "^5.0.0"

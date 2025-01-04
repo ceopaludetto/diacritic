@@ -57,7 +57,7 @@ export default eslint(
 					groups: ["side-effect", "type", "builtin", "external", "index", ["internal", "sibling", "parent"], "object"],
 					internalPattern: ["^~/.*"],
 					newlinesBetween: "always",
-					environment: "bun",
+					environment: "node",
 				},
 			],
 

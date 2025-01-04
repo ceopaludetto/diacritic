@@ -57,8 +57,7 @@
 	],
 	"scripts": {
 		"build": "tsup --silent",
-		"lint": "eslint src",
-		"publish": "bun publish"
+		"lint": "eslint src"
 	},
 	"dependencies": {
 		"accept-language-parser": "^1.5.0",

@@ -2,7 +2,7 @@
 	"name": "diacritic",
 	"type": "module",
 	"private": true,
-	"packageManager": "bun@1.1.33",
+	"packageManager": "pnpm@9.12.3",
 	"workspaces": [
 		"documentation",
 		"examples/*",
@@ -22,7 +22,7 @@
 		"build": "turbo build --cache-dir=.turbo",
 		"lint:fix": "turbo lint --cache-dir=.turbo -- --fix && sherif --fix",
 		"lint": "turbo lint --cache-dir=.turbo && sherif",
-		"release": "bun run build && turbo publish --cache-dir=.turbo",
+		"release": "pnpm run build && pnpm changeset publish",
 		"test:update": "vitest run --update",
 		"test": "vitest run"
 	},
