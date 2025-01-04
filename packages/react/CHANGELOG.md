@@ -1,5 +1,14 @@
 # @diacritic/react
 
+## 0.0.18
+
+### Patch Changes
+
+- [#42](https://github.com/ceopaludetto/diacritic/pull/42) [`395bb69`](https://github.com/ceopaludetto/diacritic/commit/395bb694542763424c64f7095ff1c24964f69b24) Thanks [@ceopaludetto](https://github.com/ceopaludetto)! - Rollback to PNPM
+
+- Updated dependencies [[`395bb69`](https://github.com/ceopaludetto/diacritic/commit/395bb694542763424c64f7095ff1c24964f69b24)]:
+  - @diacritic/runtime@0.0.18
+
 ## 0.0.17
 
 ### Patch Changes
