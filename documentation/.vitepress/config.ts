@@ -14,7 +14,6 @@ export default defineConfig({
 		nav: [
 			{ text: "Guides", link: "/guides", activeMatch: "/guides/" },
 			{ text: "Detectors", link: "/detectors", activeMatch: "/detectors/" },
-			{ text: "Parsers", link: "/parsers", activeMatch: "/parsers/" },
 			{ text: "Integrations", link: "/integrations", activeMatch: "/integrations/" },
 		],
 		search: {

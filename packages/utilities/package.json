@@ -35,8 +35,7 @@
 	],
 	"scripts": {
 		"build": "tsup --silent",
-		"lint": "eslint src",
-		"publish": "bun publish"
+		"lint": "eslint src"
 	},
 	"dependencies": {
 		"tiny-invariant": "^1.3.3"

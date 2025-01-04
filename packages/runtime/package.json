@@ -35,8 +35,7 @@
 	],
 	"scripts": {
 		"build": "tsup --silent",
-		"lint": "eslint src",
-		"publish": "bun publish"
+		"lint": "eslint src"
 	},
 	"dependencies": {
 		"@diacritic/utilities": "workspace:*",
